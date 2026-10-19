@@ -35,7 +35,7 @@ Esc — закрытие окна.
 Требования
 Для работы окна на Gameface необходима базовая библиотека:
 
-OpenWG Gameface (net.openwg.gameface_x.x.x.mtmod)
+OpenWG Gameface (net.openwg.gameface_x.x.x.mtmod) - https://gitlab.com/openwg/wot.gameface
 
 Установка
 Убедитесь, что в папке mods/<версия_игры>/ установлен мод openwg.gameface.
