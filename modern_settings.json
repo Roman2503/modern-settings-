@@ -1,0 +1,12 @@
+[
+  {
+    "itemID": "MODERN_SETTINGS_WINDOW",
+    "type": "Layout",
+    "path": "coui://gui/gameface/mods/modern_settings/index.html",
+    "parameters": {
+      "extension": "",
+      "entrance": "ModernSettings",
+      "impl": "gameface"
+    }
+  }
+]
