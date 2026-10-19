@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="ru" style="width: 100vw; height: 100vh;">
+<head>
+<meta charset="UTF-8">
+<title>Настройки игры</title>
+<style>
+  * {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  input[type="text"] { -webkit-user-select: text; user-select: text; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: rgba(6, 9, 14, 0.74);
+    color: #f0f6fc;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    overflow: hidden;
+    position: relative;
+    display: block;
+  }
+
+  .modal-window {
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    width: 1140px;
+    height: 710px;
+    background: #0d1117;
+    border: 1px solid #283242;
+    border-radius: 14px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+    overflow: hidden;
+    display: block;
+  }
+
+  .topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1140px;
+    height: 66px;
+    background: #121721;
+    border-bottom: 1px solid #222b3a;
+    padding: 0 20px;
+    display: block;
+  }
+
+  .sidebar {
+    position: absolute;
+    top: 66px;
+    left: 0;
+    width: 245px;
+    height: 582px;
+    background: #11161f;
+    border-right: 1px solid #222b3a;
+    padding: 14px 12px;
+    overflow: hidden;
+    display: block;
+  }
+
+  .content {
+    position: absolute;
+    top: 66px;
+    left: 245px;
+    width: 895px;
+    height: 582px;
+    padding: 18px 26px 18px 24px;
+    overflow: hidden;
+    display: block;
+  }
+
+  .scroll-body {
+    display: block;
+    width: 100%;
+    -webkit-transform: translateY(0px);
+    transform: translateY(0px);
+  }
+
+  /* Кастомный скроллбар для надёжной прокрутки в Gameface */
+  .scroll-track {
+    position: absolute;
+    top: 10px;
+    right: 6px;
+    width: 7px;
+    height: 562px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 25;
+    display: none;
+  }
+  .scroll-thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 7px;
+    min-height: 36px;
+    background: #2e3b52;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .scroll-track:hover .scroll-thumb,
+  .scroll-thumb.dragging {
+    background: #60a5fa;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 1140px;
+    height: 62px;
+    background: #121721;
+    border-top: 1px solid #222b3a;
+    padding: 0 20px;
+    display: block;
+  }
+
+  .row {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+  }
+  .row-between {
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+  }
+  .fill { -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
+  .topbar .row-main { height: 65px; }
+  .footer .row-main { height: 61px; }
+
+  .brand {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #f0f6fc;
+    margin-right: 16px;
+  }
+
+  /* Вкладки в шапке */
+  .tabs-bar { display: -webkit-box; display: -webkit-flex; display: flex; }
+  .tab-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #8b949e;
+    padding: 8px 14px;
+    margin-right: 6px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+  }
+  .tab-btn:hover { background: #192130; color: #e6edf3; }
+  .tab-btn.active {
+    background: rgba(59, 130, 246, 0.16);
+    border-color: rgba(59, 130, 246, 0.4);
+    color: #60a5fa;
+  }
+  .tab-icon { width: 15px; height: 15px; margin-right: 7px; fill: currentColor; }
+
+  /* Поиск */
+  .search-box { position: relative; width: 250px; display: block; }
+  .search-box input {
+    width: 100%;
+    background: #0b0e14;
+    border: 1px solid #283242;
+    color: #f0f6fc;
+    padding: 7px 12px 7px 30px;
+    border-radius: 8px;
+    font-size: 12px;
+    outline: none;
+    display: block;
+  }
+  .search-box input:focus { border-color: #3b82f6; }
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 9px;
+    width: 13px;
+    height: 13px;
+    fill: #6e7681;
+    pointer-events: none;
+  }
+
+  /* Сайдбар */
+  .sidebar-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #6e7681;
+    padding: 4px 10px 8px 10px;
+  }
+  .nav-item {
+    display: block;
+    width: 100%;
+    background: transparent;
+    color: #8b949e;
+    padding: 10px 12px;
+    margin-bottom: 4px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .nav-item:hover { background: #18202d; color: #f0f6fc; }
+  .nav-item.active {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    font-weight: 600;
+  }
+  .nav-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #3b4659;
+    margin-right: 10px;
+  }
+  .nav-item.active .nav-dot { background: #60a5fa; }
+  .nav-count {
+    font-size: 11px;
+    background: #1c2433;
+    color: #8b949e;
+    padding: 2px 7px;
+    border-radius: 10px;
+  }
+  .nav-item.active .nav-count { background: rgba(59, 130, 246, 0.25); color: #93c5fd; }
+
+  .section-header {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: #60a5fa;
+    margin: 16px 0 8px 2px;
+  }
+  .section-header.first { margin-top: 0; }
+
+  /* Карточка параметра */
+  .card {
+    display: block;
+    background: #151b26;
+    border: 1px solid #222b3a;
+    border-left: 3px solid #222b3a;
+    border-radius: 10px;
+    padding: 13px 16px;
+    margin-bottom: 9px;
+  }
+  .card:hover { background: #192130; border-color: #2f3b4f; }
+  .card.modified { border-left-color: #3b82f6; background: #161f2e; }
+  .card.locked {
+    background: #121720;
+    border-color: #1e2634;
+    border-left-color: #f59e0b;
+  }
+  .card.locked .card-control {
+    opacity: 0.38;
+    pointer-events: none;
+  }
+  .card-info { padding-right: 18px; display: block; }
+  .card-title-row {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .card-title { font-size: 13.5px; font-weight: 600; color: #f0f6fc; margin-right: 8px; }
+  .card.locked .card-title { color: #9ca3af; }
+  .card-desc { display: block; font-size: 12px; color: #8b949e; line-height: 1.35; }
+
+  /* Плашка причины неактивности параметра */
+  .card-lock-reason {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    margin-top: 6px;
+    padding: 4px 9px;
+    border-radius: 6px;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.28);
+    color: #fbbf24;
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .card-lock-reason svg {
+    width: 12px;
+    height: 12px;
+    fill: #fbbf24;
+    margin-right: 6px;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+  }
+
+  /* Ровная SVG-иконка подсказки */
+  .hint-icon {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #60a5fa;
+    cursor: help;
+    margin-right: 8px;
+  }
+  .hint-icon:hover { background: #3b82f6; color: #ffffff; border-color: #60a5fa; }
+  .hint-icon svg { width: 11px; height: 11px; fill: currentColor; pointer-events: none; }
+
+  /* Всплывающая подсказка */
+  #tooltip {
+    display: none;
+    position: absolute;
+    z-index: 300;
+    width: 320px;
+    background: #0b0e14;
+    border: 1px solid #3b82f6;
+    border-radius: 10px;
+    padding: 12px 14px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.9);
+    pointer-events: none;
+  }
+  .tt-title { display: block; font-size: 13px; font-weight: 700; color: #60a5fa; margin-bottom: 5px; }
+  .tt-body { display: block; font-size: 12px; color: #d0d7de; line-height: 1.4; margin-bottom: 6px; }
+  .tt-lock {
+    display: none;
+    font-size: 11.5px;
+    color: #fbbf24;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 6px;
+    padding: 6px 8px;
+    margin-top: 6px;
+    line-height: 1.35;
+    font-weight: 600;
+  }
+
+  /* Тумблер (Switch) */
+  .switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background: #283242;
+    border-radius: 24px;
+    cursor: pointer;
+    -webkit-transition: background .18s;
+    transition: background .18s;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+  }
+  .switch.on { background: #3b82f6; }
+  .switch .knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    -webkit-transition: left .18s;
+    transition: left .18s;
+  }
+  .switch.on .knob { left: 23px; }
+
+  /* Ползунок (Range) */
+  .range-val {
+    font-weight: 700;
+    color: #60a5fa;
+    min-width: 48px;
+    text-align: right;
+    font-size: 13.5px;
+    margin-left: 10px;
+  }
+  .range { position: relative; width: 175px; height: 22px; cursor: pointer; }
+  .range .track { position: absolute; left: 0; right: 0; top: 8px; height: 6px; background: #263040; border-radius: 4px; }
+  .range .fill { position: absolute; left: 0; top: 8px; height: 6px; background: #3b82f6; border-radius: 4px; }
+  .range .thumb { position: absolute; top: 3px; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; background: #60a5fa; box-shadow: 0 0 6px rgba(59,130,246,0.6); }
+
+  /* Кнопки выбора вариантов (всегда в виде кнопок) */
+  .btn-group {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    background: #0b0e14;
+    border: 1px solid #283242;
+    border-radius: 8px;
+    padding: 3px;
+  }
+  .opt-btn {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #8b949e;
+    cursor: pointer;
+    margin-right: 2px;
+    white-space: nowrap;
+  }
+  .opt-btn.last { margin-right: 0; }
+  .opt-btn:hover { color: #f0f6fc; background: #161d29; }
+  .opt-btn.active { background: #3b82f6; color: #ffffff; }
+
+  /* Кнопка назначения клавиши (Keybind) */
+  .keybind-wrap {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+  }
+  .keybind-btn {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    min-width: 140px;
+    height: 34px;
+    padding: 0 14px;
+    background: #0b0e14;
+    border: 1px solid #303c52;
+    border-bottom: 2px solid #3b4b66;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #60a5fa;
+    cursor: pointer;
+  }
+  .keybind-btn:hover { border-color: #60a5fa; background: #131a26; color: #93c5fd; }
+  .keybind-btn.listening {
+    background: rgba(245, 158, 11, 0.16);
+    border-color: #f59e0b;
+    color: #fbbf24;
+  }
+  .keybind-btn.unbound { color: #6e7681; font-weight: 500; }
+
+  /* Идеально отцентрированная SVG-кнопка очистки привязки клавиши */
+  .keybind-clear {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    margin-left: 6px;
+    border-radius: 8px;
+    background: #141a24;
+    border: 1px solid #283242;
+    border-bottom: 2px solid #303c52;
+    color: #8b949e;
+    cursor: pointer;
+  }
+  .keybind-clear svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+    display: block;
+    pointer-events: none;
+  }
+  .keybind-clear:hover {
+    border-color: #ef4444;
+    border-bottom-color: #dc2626;
+    color: #f87171;
+    background: rgba(239, 68, 68, 0.12);
+  }
+
+  /* Нижняя панель */
+  .legacy-label {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 12.5px;
+    color: #c9d1d9;
+    background: #161d29;
+    border: 1px solid #2b3547;
+    padding: 7px 12px;
+    border-radius: 7px;
+    margin-right: 10px;
+  }
+  .legacy-label:hover { border-color: #60a5fa; color: #fff; }
+  .legacy-box {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+    border: 1px solid #485263;
+    border-radius: 3px;
+    background: #0d1117;
+  }
+  .legacy-label.on .legacy-box { background: #3b82f6; border-color: #3b82f6; }
+
+  .conn-pill {
+    font-size: 11px;
+    color: #4ade80;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    padding: 4px 9px;
+    border-radius: 6px;
+    margin-right: 8px;
+  }
+  .conn-pill.wait { color: #fbbf24; background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.3); }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    margin-left: 8px;
+  }
+  .btn-primary { background: #3b82f6; color: #fff; }
+  .btn-primary:hover { background: #2563eb; }
+  .btn-primary.disabled { opacity: 0.42; cursor: default; }
+  .btn-ghost { background: transparent; color: #8b949e; border-color: #2b3547; }
+  .btn-ghost:hover { color: #f0f6fc; border-color: #485263; }
+
+  .status-msg { font-size: 12.5px; font-weight: 600; color: #4ade80; margin-right: 8px; display: none; }
+  .status-msg.show { display: inline-block; }
+  .empty { display: block; color: #8b949e; font-size: 13px; padding: 36px 0; text-align: center; }
+</style>
+</head>
+<body>
+
+  <div class="modal-window" id="modalWindow">
+    <div id="tooltip">
+      <div class="tt-title" id="ttTitle"></div>
+      <div class="tt-body" id="ttBody"></div>
+      <div class="tt-lock" id="ttLock"></div>
+    </div>
+
+    <div class="topbar">
+      <div class="row row-between row-main">
+        <div class="row">
+          <div class="brand">НАСТРОЙКИ</div>
+          <div class="tabs-bar" id="tabsBar"></div>
+        </div>
+        <div class="row">
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+            <input type="text" id="searchInput" placeholder="Поиск по параметрам...">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+      <div class="scroll-body" id="sidebarBody"></div>
+    </div>
+
+    <div class="content" id="content">
+      <div class="scroll-body" id="contentBody"></div>
+      <div class="scroll-track" id="contentScrollTrack">
+        <div class="scroll-thumb" id="contentScrollThumb"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="row row-between row-main">
+        <div class="row">
+          <div class="legacy-label" id="chkLegacy" title="Переключиться на стандартное окно настроек клиента">
+            <span class="legacy-box"></span><span>Классические настройки</span>
+          </div>
+          <div class="btn btn-ghost" id="btnReset" style="display:none;">Отменить правки</div>
+        </div>
+        <div class="row">
+          <span class="conn-pill wait" id="connPill">Синхронизация...</span>
+          <span class="status-msg" id="statusMsg">Изменения применены!</span>
+          <div class="btn btn-ghost" id="btnClose">Закрыть (Esc)</div>
+          <div class="btn btn-primary disabled" id="btnSave">Применить</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="coui://gui/gameface/mods/modern_settings/bridge.js"></script>
+<script>
+  var INFO_SVG = '<svg viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg>';
+  var LOCK_SVG = '<svg viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>';
+  var CLEAR_SVG = '<svg viewBox="0 0 16 16"><path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06z"/></svg>';
+
+  var TABS = [
+    { id: 'game', title: 'Игра', icon: '<svg class="tab-icon" viewBox="0 0 16 16"><path d="M11.5 6.027a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2.5-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm-6.5-3h1v1h1v1h-1v1h-1v-1h-1v-1h1v-1z"/><path d="M3.051 3.26a.5.5 0 0 1 .354-.613l1.932-.518a.5.5 0 0 1 .62.39c.655-.079 1.35-.117 2.043-.117.72 0 1.443.041 2.12.126a.5.5 0 0 1 .622-.399l1.932.518a.5.5 0 0 1 .306.729c.14.09.266.19.373.297.408.408.78 1.05 1.095 1.772.32.733.599 1.591.805 2.466.206.875.34 1.78.364 2.606.024.816-.059 1.602-.328 2.21a1.42 1.42 0 0 1-1.445.83c-.636-.067-1.115-.394-1.513-.773-.245-.232-.496-.526-.739-.808-.126-.148-.25-.292-.368-.423-.728-.804-1.597-1.527-3.224-1.527-1.627 0-2.496.723-3.224 1.527-.119.131-.242.275-.368.423-.243.282-.494.575-.739.808-.398.38-.877.706-1.513.773a1.42 1.42 0 0 1-1.445-.83c-.27-.608-.352-1.395-.329-2.21.024-.826.16-1.73.365-2.606.206-.875.486-1.733.805-2.466.315-.722.687-1.364 1.094-1.772a2.34 2.34 0 0 1 .433-.335.504.504 0 0 1-.028-.079z"/></svg>' },
+    { id: 'graphics', title: 'Графика', icon: '<svg class="tab-icon" viewBox="0 0 16 16"><path d="M0 4s0-2 2-2h12s2 0 2 2v6s0 2-2 2h-4c0 .667.083 1.167.25 1.5H11a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1h.75c.167-.333.25-.833.25-1.5H2s-2 0-2-2V4zm1.398-.855a.758.758 0 0 0-.254.302A1.46 1.46 0 0 0 1 4.01V10c0 .325.078.502.145.602.07.105.17.188.302.254a1.464 1.464 0 0 0 .538.143L2.01 11H14c.325 0 .502-.078.602-.145a.758.758 0 0 0 .254-.302 1.464 1.464 0 0 0 .143-.538L15 9.99V4c0-.325-.078-.502-.145-.602a.757.757 0 0 0-.302-.254A1.46 1.46 0 0 0 13.99 3H2c-.325 0-.502.078-.602.145z"/></svg>' },
+    { id: 'sound', title: 'Звук', icon: '<svg class="tab-icon" viewBox="0 0 16 16"><path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"/><path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"/><path d="M8.707 11.182A4.486 4.486 0 0 0 10.025 8a4.486 4.486 0 0 0-1.318-3.182L8 5.525A3.489 3.489 0 0 1 9.025 8 3.49 3.49 0 0 1 8 10.475l.707.707zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z"/></svg>' },
+    { id: 'controls', title: 'Управление', icon: '<svg class="tab-icon" viewBox="0 0 16 16"><path d="M14 5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h12zM2 4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H2z"/><path d="M13 10.25a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-.5zm0-2a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-.5zm-5 2A.25.25 0 0 1 8.25 10h.5a.25.25 0 0 1 .25.25v.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-.5zm-3.5.25a.25.25 0 0 1 .25-.25h3a.25.25 0 0 1 .25.25v.5a.25.25 0 0 1-.25.25h-3a.25.25 0 0 1-.25-.25v-.5z"/></svg>' }
+  ];
+
+  var CATEGORIES = {
+    game: [
+      { id: 'all', title: 'Все параметры' },
+      { id: 'camera', title: 'Камера и прицел' },
+      { id: 'minimap', title: 'Миникарта' },
+      { id: 'hud', title: 'Боевой интерфейс' },
+      { id: 'chat', title: 'Боевой чат и реплеи' },
+      { id: 'hangar', title: 'Ангар и карусель' }
+    ],
+    graphics: [
+      { id: 'all', title: 'Все параметры' },
+      { id: 'display', title: 'Экран и рендер' },
+      { id: 'quality', title: 'Детализация и текстуры' },
+      { id: 'lighting', title: 'Освещение и тени' },
+      { id: 'flora', title: 'Растительность и эффекты' }
+    ],
+    sound: [
+      { id: 'all', title: 'Все параметры' },
+      { id: 'master', title: 'Общий звук и режим' },
+      { id: 'mixer', title: 'Громкость каналов' },
+      { id: 'voices', title: 'Озвучка и оповещения' },
+      { id: 'voip', title: 'Голосовая связь' }
+    ],
+    controls: [
+      { id: 'all', title: 'Все параметры' },
+      { id: 'sens', title: 'Мышь и чувствительность' },
+      { id: 'move_keys', title: 'Движение' },
+      { id: 'fire_keys', title: 'Стрельба и прицел' },
+      { id: 'slot_keys', title: 'Боекомплект и снаряжение' },
+      { id: 'ui_keys', title: 'Чат и миникарта' }
+    ]
+  };
+
+  var OFF_ALT_ALWAYS = [{v: 0, l: 'Никогда'}, {v: 1, l: 'По Alt'}, {v: 2, l: 'Всегда'}];
+  var QUALITY_5 = [{v: 0, l: 'Максимум'}, {v: 1, l: 'Высоко'}, {v: 2, l: 'Средне'}, {v: 3, l: 'Низко'}, {v: 4, l: 'Выкл / Мин'}];
+  var QUALITY_4 = [{v: 0, l: 'Максимум'}, {v: 1, l: 'Высоко'}, {v: 2, l: 'Средне'}, {v: 3, l: 'Низко / Выкл'}];
+
+  // Строго оригинальные параметры игры «Мир танков» без кастомных дополнений
+  var SETTINGS_SCHEMA = [
+    // ==================== ИГРА ====================
+    { key: 'fovStatic', tab: 'game', cat: 'camera', type: 'range', min: 60, max: 120, unit: '°',
+      title: 'Угол обзора (FOV)',
+      desc: 'Фиксированный горизонтальный угол обзора камеры в аркадном режиме',
+      hint: 'Задаёт постоянный угол обзора камеры при выключенном динамическом изменении угла обзора.' },
+    { key: 'dynamicFov', tab: 'game', cat: 'camera', type: 'toggle',
+      title: 'Динамическое изменение угла обзора',
+      desc: 'Автоматическое изменение угла обзора камеры в зависимости от скорости движения машины' },
+    { key: 'fovMin', tab: 'game', cat: 'camera', type: 'range', min: 60, max: 100, unit: '°',
+      title: 'Нижняя граница динамического FOV',
+      desc: 'Минимальный угол обзора при остановке или медленном движении танка' },
+    { key: 'fovMax', tab: 'game', cat: 'camera', type: 'range', min: 80, max: 120, unit: '°',
+      title: 'Верхняя граница динамического FOV',
+      desc: 'Максимальный угол обзора при движении танка на полной скорости' },
+    { key: 'dynamicCamera', tab: 'game', cat: 'camera', type: 'toggle',
+      title: 'Включить динамическую камеру',
+      desc: 'Плавная амортизация камеры при движении танка и отдача при выстрелах' },
+    { key: 'horStabilizationSnp', tab: 'game', cat: 'camera', type: 'toggle',
+      title: 'Горизонтальная стабилизация в снайперском режиме',
+      desc: 'Удержание направления прицела при повороте корпуса танка' },
+    { key: 'increasedZoom', tab: 'game', cat: 'camera', type: 'toggle',
+      title: 'Кратность приближения x16 и x25',
+      desc: 'Включение дополнительных ступеней приближения в снайперском прицеле' },
+    { key: 'sniperModeByShift', tab: 'game', cat: 'camera', type: 'toggle',
+      title: 'Включение снайперского режима только по Shift',
+      desc: 'Отключает переход в снайперский прицел при вращении колеса мыши' },
+    { key: 'enableOpticalSnpEffect', tab: 'game', cat: 'camera', type: 'toggle',
+      title: 'Оптический эффект в снайперском прицеле',
+      desc: 'Отображение эффекта линзы и затемнения по краям экрана в снайперском режиме' },
+    { key: 'useServerAim', tab: 'game', cat: 'camera', type: 'toggle',
+      title: 'Использовать серверный прицел',
+      desc: 'Отображение положения перекрестия прицела по расчётам сервера' },
+    { key: 'commanderCam', tab: 'game', cat: 'camera', type: 'toggle',
+      title: 'Командирская камера',
+      desc: 'Дополнительное отдаление камеры высоко над полем боя для обзора обстановки' },
+    { key: 'preCommanderCam', tab: 'game', cat: 'camera', type: 'toggle',
+      title: 'Тактический обзор',
+      desc: 'Дополнительные промежуточные ступени отдаления камеры за танком' },
+    { key: 'hullLockEnabled', tab: 'game', cat: 'camera', type: 'toggle',
+      title: 'Блокировка корпуса в снайперском режиме',
+      desc: 'Фиксация поворота корпуса в снайперском прицеле для ПТ-САУ и техники без башни' },
+    { key: 'postMortemMode', tab: 'game', cat: 'camera', type: 'toggle',
+      title: 'Показывать машину, уничтожившую ваш танк',
+      desc: 'Автоматический показ танка противника после уничтожения вашей машины' },
+
+    // Миникарта
+    { key: 'minimapViewRange', tab: 'game', cat: 'minimap', type: 'toggle',
+      title: 'Круг обзора танка',
+      desc: 'Зелёный динамический круг фактического обзора вашей машины с учётом оборудования и навыков' },
+    { key: 'minimapMaxViewRange', tab: 'game', cat: 'minimap', type: 'toggle',
+      title: 'Круг максимального обзора (445 м)',
+      desc: 'Белый круг предельной дистанции обнаружения техники в игре' },
+    { key: 'minimapDrawRange', tab: 'game', cat: 'minimap', type: 'toggle',
+      title: 'Круг отрисовки техники (564 м)',
+      desc: 'Жёлтый круг максимальной дистанции отображения обнаруженной техники' },
+    { key: 'minimapMinSpottingRange', tab: 'game', cat: 'minimap', type: 'toggle',
+      title: 'Круг гарантированного обнаружения (50 м)',
+      desc: 'Голубой круг радиуса безусловного обнаружения техники («рентген»)' },
+    { key: 'showVehModelsOnMap', tab: 'game', cat: 'minimap', type: 'segment',
+      options: [{v: 0, l: 'Никогда'}, {v: 2, l: 'По Alt'}, {v: 1, l: 'Всегда'}],
+      title: 'Названия техники на миникарте',
+      desc: 'Отображение названий моделей танков рядом с иконками на миникарте' },
+    { key: 'showVehicleHPinMinimap', tab: 'game', cat: 'minimap', type: 'segment', options: OFF_ALT_ALWAYS,
+      title: 'Запас прочности (ХП) на миникарте',
+      desc: 'Отображение круговых индикаторов запаса прочности техники на миникарте' },
+    { key: 'showVectorOnMap', tab: 'game', cat: 'minimap', type: 'toggle',
+      title: 'Линия направления камеры',
+      desc: 'Отображать луч направления взгляда вашей камеры на миникарте' },
+    { key: 'showSectorOnMap', tab: 'game', cat: 'minimap', type: 'toggle',
+      title: 'Сектор горизонтальной наводки (УГН)',
+      desc: 'Отображать границы углов горизонтальной наводки для САУ и ПТ-САУ на миникарте' },
+    { key: 'minimapAlphaEnabled', tab: 'game', cat: 'minimap', type: 'toggle',
+      title: 'Включить прозрачность миникарты',
+      desc: 'Разрешить регулировку полупрозрачности фона миникарты в бою' },
+    { key: 'minimapAlpha', tab: 'game', cat: 'minimap', type: 'range', min: 0, max: 100, unit: '%',
+      title: 'Уровень прозрачности миникарты',
+      desc: 'Степень прозрачности подложки миникарты в боевом интерфейсе' },
+
+    // Боевой интерфейс
+    { key: 'showVehicleHPinPlayersPanel', tab: 'game', cat: 'hud', type: 'segment', options: OFF_ALT_ALWAYS,
+      title: 'Полосы прочности (ХП) в ушах команд',
+      desc: 'Отображение индикаторов запаса прочности танков в списках команд' },
+    { key: 'enableSpeedometer', tab: 'game', cat: 'hud', type: 'toggle',
+      title: 'Отображать спидометр',
+      desc: 'Показатель скорости движения рядом с панелью состояния машины' },
+    { key: 'enableRepairTimer', tab: 'game', cat: 'hud', type: 'toggle',
+      title: 'Отображать таймер ремонта модулей',
+      desc: 'Секундный отсчёт времени восстановления повреждённых модулей на панели танка' },
+    { key: 'showDamageIcon', tab: 'game', cat: 'hud', type: 'toggle',
+      title: 'Уведомления о критических попаданиях',
+      desc: 'Отображать иконки повреждённых модулей в боевой ленте событий' },
+    { key: 'showMarksOnGun', tab: 'game', cat: 'hud', type: 'toggle',
+      title: 'Скрывать отметки на стволах орудий',
+      desc: 'Управление отображением отличительных отметок на стволах орудий в бою' },
+    { key: 'c11nHistoricallyAccurate', tab: 'game', cat: 'hud', type: 'toggle',
+      title: 'Скрывать неисторичные элементы внешнего вида',
+      desc: 'Отображать в бою только историчные стили, декали и элементы кастомизации' },
+
+    // Боевой чат и реплеи
+    { key: 'replayEnabled', tab: 'game', cat: 'chat', type: 'segment',
+      options: [{v: 0, l: 'Никогда'}, {v: 1, l: 'Последний'}, {v: 2, l: 'Все бои'}],
+      title: 'Запись боёв для воспроизведения',
+      desc: 'Автоматическое сохранение записей боёв в папку replays игрового клиента' },
+    { key: 'disableBattleChat', tab: 'game', cat: 'chat', type: 'toggle',
+      title: 'Отключить текстовый чат в бою',
+      desc: 'Скрывает текстовые сообщения игроков в случайных боях' },
+    { key: 'receiveInvitesInBattle', tab: 'game', cat: 'chat', type: 'toggle',
+      title: 'Принимать приглашения во взвод в бою',
+      desc: 'Разрешает игрокам отправлять вам приглашения в динамический взвод во время боя' },
+    { key: 'receiveFriendshipRequest', tab: 'game', cat: 'chat', type: 'toggle',
+      title: 'Принимать запросы в друзья в бою',
+      desc: 'Отображать входящие запросы на добавление в список контактов в бою' },
+    { key: 'chatContactsListOnly', tab: 'game', cat: 'chat', type: 'toggle',
+      title: 'Принимать сообщения только из списка контактов',
+      desc: 'Блокирует личные сообщения в ангаре от игроков вне вашего списка друзей' },
+
+    // Ангар и карусель
+    { key: 'carouselType', tab: 'game', cat: 'hangar', type: 'segment',
+      options: [{v: 0, l: 'В 1 ряд'}, {v: 1, l: 'В 2 ряда'}],
+      title: 'Карусель техники в ангаре',
+      desc: 'Количество рядов со слотами техники в нижней части экрана ангара' },
+    { key: 'doubleCarouselType', tab: 'game', cat: 'hangar', type: 'segment',
+      options: [{v: 0, l: 'Адаптивный'}, {v: 1, l: 'Минималистичный'}],
+      title: 'Размер ячеек двухрядной карусели',
+      desc: 'Масштаб слотов техники при включённом двухрядном режиме карусели' },
+    { key: 'vehicleCarouselStats', tab: 'game', cat: 'hangar', type: 'toggle',
+      title: 'Показывать статистику на карусели техники',
+      desc: 'Отображение процента побед и отметок на орудии на слотах танков в ангаре' },
+    { key: 'hangarCamPeriod', tab: 'game', cat: 'hangar', type: 'segment',
+      options: [{v: 0, l: 'Никогда'}, {v: 1, l: '30 сек'}, {v: 2, l: '1 мин'}],
+      title: 'Вращение камеры в ангаре при простое',
+      desc: 'Интервал бездействия перед началом плавного облёта камеры вокруг танка' },
+    { key: 'hangarCamParallaxEnabled', tab: 'game', cat: 'hangar', type: 'toggle',
+      title: 'Плавный параллакс камеры в ангаре',
+      desc: 'Лёгкое смещение ракурса камеры вслед за движением курсора мыши в ангаре' },
+
+    // ==================== ГРАФИКА ====================
+    { key: 'RENDER_PIPELINE', tab: 'graphics', cat: 'display', type: 'segment',
+      options: [{v: 0, l: 'Улучшенная'}, {v: 1, l: 'Стандартная'}],
+      title: 'Графика (Тип рендера)',
+      desc: 'Переключение между современным рендером (Улучшенная) и упрощённым режимом (Стандартная)' },
+    { key: 'vertSync', tab: 'graphics', cat: 'display', type: 'toggle',
+      title: 'Вертикальная синхронизация',
+      desc: 'Синхронизация частоты кадров с частотой обновления монитора для устранения разрывов кадра' },
+    { key: 'tripleBuffered', tab: 'graphics', cat: 'display', type: 'toggle',
+      title: 'Тройная буферизация',
+      desc: 'Повышает плавность видеоряда при включённой вертикальной синхронизации' },
+    { key: 'DRR_AUTOSCALER_ENABLED', tab: 'graphics', cat: 'display', type: 'toggle',
+      title: 'Динамическое изменение разрешения 3D-рендера',
+      desc: 'Автоматически снижает разрешение 3D-сцены при просадках частоты кадров' },
+    { key: 'dynamicRenderer', tab: 'graphics', cat: 'display', type: 'range', min: 50, max: 100, unit: '%',
+      title: 'Разрешение 3D-рендера',
+      desc: 'Ручная регулировка масштаба разрешения 3D-сцены относительно разрешения экрана' },
+    { key: 'isColorBlind', tab: 'graphics', cat: 'display', type: 'toggle',
+      title: 'Режим цветовой слепоты',
+      desc: 'Заменяет красный цвет маркеров и индикаторов противника на сине-фиолетовый' },
+
+    // Детализация и текстуры
+    { key: 'TEXTURE_QUALITY', tab: 'graphics', cat: 'quality', type: 'segment', options: QUALITY_5,
+      title: 'Качество текстур',
+      desc: 'Детализация текстур поверхности техники, сооружений и элементов окружения' },
+    { key: 'OBJECT_LOD', tab: 'graphics', cat: 'quality', type: 'segment', options: QUALITY_5,
+      title: 'Дальность отрисовки',
+      desc: 'Дистанция детализированного отображения объектов и элементов карты' },
+    { key: 'TERRAIN_QUALITY', tab: 'graphics', cat: 'quality', type: 'segment', options: QUALITY_5,
+      title: 'Качество ландшафта',
+      desc: 'Детализация геометрии рельефа местности и поверхности грунта' },
+    { key: 'TERRAIN_TESSELLATION_ENABLED', tab: 'graphics', cat: 'quality', type: 'toggle',
+      title: 'Тесселяция ландшафта',
+      desc: 'Динамическая детализация неровностей рельефа в аркадном режиме камеры' },
+    { key: 'SNIPER_MODE_TERRAIN_TESSELLATION_ENABLED', tab: 'graphics', cat: 'quality', type: 'toggle',
+      title: 'Тесселяция ландшафта в снайперском режиме',
+      desc: 'Точная геометрия контуров рельефа местности при прицеливании в снайперском режиме' },
+
+    // Освещение и тени
+    { key: 'SHADOWS_QUALITY', tab: 'graphics', cat: 'lighting', type: 'segment', options: QUALITY_5,
+      title: 'Качество теней',
+      desc: 'Детализация и дальность отрисовки динамических теней от техники и объектов' },
+    { key: 'LIGHTING_QUALITY', tab: 'graphics', cat: 'lighting', type: 'segment', options: QUALITY_5,
+      title: 'Качество освещения',
+      desc: 'Детализация световых эффектов, затенения (SSAO) и бликов' },
+    { key: 'POST_PROCESSING_QUALITY', tab: 'graphics', cat: 'lighting', type: 'segment', options: QUALITY_5,
+      title: 'Постобработка',
+      desc: 'Эффекты свечения, бликов линз, глубины резкости и цветокоррекции' },
+    { key: 'MOTION_BLUR_QUALITY', tab: 'graphics', cat: 'lighting', type: 'segment', options: QUALITY_4,
+      title: 'Размытие в движении',
+      desc: 'Эффект смазывания изображения при быстром движении и повороте камеры' },
+    { key: 'WATER_QUALITY', tab: 'graphics', cat: 'lighting', type: 'segment', options: QUALITY_4,
+      title: 'Качество воды',
+      desc: 'Детализация отражений, преломления света и волн на водных поверхностях' },
+
+    // Растительность и эффекты
+    { key: 'FLORA_QUALITY', tab: 'graphics', cat: 'flora', type: 'segment', options: QUALITY_5,
+      title: 'Количество растительности',
+      desc: 'Плотность отрисовки травы и мелкого кустарника на поверхности карты' },
+    { key: 'SNIPER_MODE_GRASS_ENABLED', tab: 'graphics', cat: 'flora', type: 'toggle',
+      title: 'Трава в снайперском режиме',
+      desc: 'Отображение травы в оптическом прицеле при переходе в снайперский режим' },
+    { key: 'SEMITRANSPARENT_LEAVES_ENABLED', tab: 'graphics', cat: 'flora', type: 'toggle',
+      title: 'Полупрозрачная листва',
+      desc: 'Плавная полупрозрачность крон деревьев и кустов вокруг танка' },
+    { key: 'EFFECTS_QUALITY', tab: 'graphics', cat: 'flora', type: 'segment', options: QUALITY_5,
+      title: 'Качество дополнительных эффектов',
+      desc: 'Детализация дыма, пламени, искр, взрывов и разрушений объектов' },
+    { key: 'SNIPER_MODE_EFFECTS_QUALITY', tab: 'graphics', cat: 'flora', type: 'segment', options: QUALITY_4,
+      title: 'Доп. эффекты в снайперском режиме',
+      desc: 'Качество отрисовки дыма и взрывов при стрельбе в снайперском прицеле' },
+    { key: 'VEHICLE_DUST_ENABLED', tab: 'graphics', cat: 'flora', type: 'toggle',
+      title: 'Пыль из-под гусениц',
+      desc: 'Отображение клубов пыли, снега и грязи из-под гусениц при движении' },
+    { key: 'VEHICLE_TRACES_ENABLED', tab: 'graphics', cat: 'flora', type: 'toggle',
+      title: 'Следы от гусениц',
+      desc: 'Отображение отпечатков траков гусениц на грунте, песке и снегу' },
+
+    // ==================== ЗВУК ====================
+    { key: 'masterVolumeToggle', tab: 'sound', cat: 'master', type: 'toggle',
+      title: 'Общий уровень звука (Включить звук)',
+      desc: 'Полное включение или отключение воспроизведения звуков в клиенте игры' },
+    { key: 'masterVolume', tab: 'sound', cat: 'master', type: 'range', min: 0, max: 100, unit: '%',
+      title: 'Общая громкость',
+      desc: 'Главный регулятор громкости всех звуковых эффектов, голосов и музыки' },
+    { key: 'soundQuality', tab: 'sound', cat: 'master', type: 'segment',
+      options: [{v: 0, l: 'Высокое'}, {v: 1, l: 'Низкое'}],
+      title: 'Качество звука',
+      desc: 'Точность расчёта звуковых эффектов (низкое качество снижает нагрузку на процессор)' },
+    { key: 'nightMode', tab: 'sound', cat: 'master', type: 'toggle',
+      title: 'Ночной режим',
+      desc: 'Сужает динамический диапазон и приглушает резкие громкие звуки выстрелов и взрывов' },
+    { key: 'bassBoost', tab: 'sound', cat: 'master', type: 'toggle',
+      title: 'Усиление низких частот',
+      desc: 'Акцентирует низкие частоты при выстрелах орудий и работе двигателей' },
+    { key: 'subtitles', tab: 'sound', cat: 'master', type: 'toggle',
+      title: 'Субтитры',
+      desc: 'Отображать текстовые субтитры для голосовых уведомлений и видеороликов' },
+
+    { key: 'vehicles', tab: 'sound', cat: 'mixer', type: 'range', min: 0, max: 100, unit: '%',
+      title: 'Техника',
+      desc: 'Громкость работы двигателей, ходовой части, гусениц и механизмов башни' },
+    { key: 'effects', tab: 'sound', cat: 'mixer', type: 'range', min: 0, max: 100, unit: '%',
+      title: 'Эффекты',
+      desc: 'Громкость выстрелов, попаданий, пробитий, рикошетов и взрывов' },
+    { key: 'voiceNotification', tab: 'sound', cat: 'mixer', type: 'range', min: 0, max: 100, unit: '%',
+      title: 'Голосовые уведомления',
+      desc: 'Громкость реплик экипажа и звукового оповещения навыка «Шестое чувство»' },
+    { key: 'gui', tab: 'sound', cat: 'mixer', type: 'range', min: 0, max: 100, unit: '%',
+      title: 'Интерфейс',
+      desc: 'Громкость элементов интерфейса, таймера захвата базы и сигналов миникарты' },
+    { key: 'ambient', tab: 'sound', cat: 'mixer', type: 'range', min: 0, max: 100, unit: '%',
+      title: 'Окружающая среда',
+      desc: 'Громкость фоновых звуков природы и атмосферы локации' },
+    { key: 'musicVolume', tab: 'sound', cat: 'mixer', type: 'range', min: 0, max: 100, unit: '%',
+      title: 'Музыка в бою и при загрузке',
+      desc: 'Громкость музыкального сопровождения во время загрузки карты и в бою' },
+    { key: 'musicHangar', tab: 'sound', cat: 'mixer', type: 'range', min: 0, max: 100, unit: '%',
+      title: 'Музыка в ангаре',
+      desc: 'Громкость фоновой музыки при нахождении в ангаре' },
+
+    { key: 'altVoices', tab: 'sound', cat: 'voices', type: 'segment',
+      options: [{v: 0, l: 'Стандартная'}, {v: 1, l: 'Командирская'}],
+      title: 'Голосовые уведомления в бою',
+      desc: 'Выбор между общей стандартной озвучкой и национальной озвучкой командиров' },
+    { key: 'bulbVoices', tab: 'sound', cat: 'voices', type: 'segment',
+      options: [{v: 0, l: 'Вариант 1'}, {v: 1, l: 'Вариант 2'}, {v: 2, l: 'Пользовательский'}],
+      title: 'Звук навыка «Шестое чувство»',
+      desc: 'Выбор звукового сигнала при срабатывании лампы обнаружения танка' },
+    { key: 'artilleryBulbVoices', tab: 'sound', cat: 'voices', type: 'segment',
+      options: [{v: 0, l: 'Вариант 1'}, {v: 1, l: 'Вариант 2'}],
+      title: 'Звуковой детектор выстрела САУ',
+      desc: 'Выбор звукового оповещения при срабатывании навыка «Звуковая разведка»' },
+
+    { key: 'enableVoIP', tab: 'sound', cat: 'voip', type: 'toggle',
+      title: 'Включить голосовую связь',
+      desc: 'Разрешить передачу и приём голоса во взводе и командных режимах боя' },
+    { key: 'masterVivoxVolume', tab: 'sound', cat: 'voip', type: 'range', min: 0, max: 100, unit: '%',
+      title: 'Громкость голоса игроков',
+      desc: 'Уровень громкости голосов собеседников в голосовом чате' },
+    { key: 'micVivoxVolume', tab: 'sound', cat: 'voip', type: 'range', min: 0, max: 100, unit: '%',
+      title: 'Чувствительность микрофона',
+      desc: 'Уровень усиления вашего микрофона при передаче голоса' },
+
+    // ==================== УПРАВЛЕНИЕ ====================
+    { key: 'mouseArcadeSens', tab: 'controls', cat: 'sens', type: 'range', min: 1, max: 100, unit: '%',
+      title: 'Чувствительность в аркадном режиме',
+      desc: 'Скорость вращения камеры от третьего лица при движении мыши' },
+    { key: 'mouseSniperSens', tab: 'controls', cat: 'sens', type: 'range', min: 1, max: 100, unit: '%',
+      title: 'Чувствительность в снайперском режиме',
+      desc: 'Скорость наведения прицела в оптическом снайперском режиме' },
+    { key: 'mouseStrategicSens', tab: 'controls', cat: 'sens', type: 'range', min: 1, max: 100, unit: '%',
+      title: 'Чувствительность в артиллерийском режиме',
+      desc: 'Скорость перемещения прицела при игре на САУ' },
+    { key: 'mouseFreeCamSens', tab: 'controls', cat: 'sens', type: 'range', min: 1, max: 100, unit: '%',
+      title: 'Чувствительность свободной камеры',
+      desc: 'Скорость обзора камеры в посмертном режиме и при просмотре реплеев' },
+    { key: 'mouseHorzInvert', tab: 'controls', cat: 'sens', type: 'toggle',
+      title: 'Горизонтальная инверсия',
+      desc: 'Инвертировать горизонтальное вращение камеры влево и вправо' },
+    { key: 'mouseVertInvert', tab: 'controls', cat: 'sens', type: 'toggle',
+      title: 'Вертикальная инверсия',
+      desc: 'Инвертировать вертикальный наклон камеры вверх и вниз' },
+    { key: 'backDraftInvert', tab: 'controls', cat: 'sens', type: 'toggle',
+      title: 'Инверсия заднего хода',
+      desc: 'При движении задним ходом клавиши поворота поворачивают корму танка в выбранную сторону' },
+
+    // Клавиши: Движение
+    { key: 'bind_CMD_MOVE_FORWARD', tab: 'controls', cat: 'move_keys', type: 'keybind',
+      title: 'Вперёд', desc: 'Движение машины вперёд' },
+    { key: 'bind_CMD_MOVE_BACKWARD', tab: 'controls', cat: 'move_keys', type: 'keybind',
+      title: 'Назад', desc: 'Торможение и движение задним ходом' },
+    { key: 'bind_CMD_ROTATE_LEFT', tab: 'controls', cat: 'move_keys', type: 'keybind',
+      title: 'Налево', desc: 'Поворот корпуса машины налево' },
+    { key: 'bind_CMD_ROTATE_RIGHT', tab: 'controls', cat: 'move_keys', type: 'keybind',
+      title: 'Направо', desc: 'Поворот корпуса машины направо' },
+    { key: 'bind_CMD_INCREMENT_CRUISE_MODE', tab: 'controls', cat: 'move_keys', type: 'keybind',
+      title: 'Круиз-контроль вперёд', desc: 'Пошаговое увеличение скорости автоматического движения вперёд' },
+    { key: 'bind_CMD_DECREMENT_CRUISE_MODE', tab: 'controls', cat: 'move_keys', type: 'keybind',
+      title: 'Круиз-контроль назад', desc: 'Пошаговое увеличение скорости автоматического движения назад' },
+    { key: 'bind_CMD_BLOCK_TRACKS', tab: 'controls', cat: 'move_keys', type: 'keybind',
+      title: 'Ручной тормоз', desc: 'Блокировка гусениц для резкого торможения или разворота' },
+    { key: 'bind_CMD_CM_VEHICLE_SWITCH_AUTOROTATION', tab: 'controls', cat: 'move_keys', type: 'keybind',
+      title: 'Блокировка корпуса / Смена режима движения', desc: 'Включение блокировки корпуса ПТ-САУ или смена скоростного/осадного режима' },
+
+    // Клавиши: Стрельба и прицел
+    { key: 'bind_CMD_CM_SHOOT', tab: 'controls', cat: 'fire_keys', type: 'keybind',
+      title: 'Выстрел', desc: 'Произвести выстрел из орудия' },
+    { key: 'bind_CMD_CM_ALTERNATE_MODE', tab: 'controls', cat: 'fire_keys', type: 'keybind',
+      title: 'Снайперский / Артиллерийский режим', desc: 'Переключение между аркадным и прицельным режимом камеры' },
+    { key: 'bind_CMD_CM_LOCK_TARGET', tab: 'controls', cat: 'fire_keys', type: 'keybind',
+      title: 'Автоприцел', desc: 'Захват и автоматическое сопровождение выбранной цели' },
+    { key: 'bind_CMD_CM_LOCK_TARGET_OFF', tab: 'controls', cat: 'fire_keys', type: 'keybind',
+      title: 'Отключение автоприцела', desc: 'Сброс захвата цели' },
+    { key: 'bind_CMD_RELOAD_PARTIAL_CLIP', tab: 'controls', cat: 'fire_keys', type: 'keybind',
+      title: 'Перезарядка кассеты / орудия', desc: 'Принудительная полная перезарядка барабана или магазина' },
+    { key: 'bind_CMD_CM_TRAJECTORY_VIEW', tab: 'controls', cat: 'fire_keys', type: 'keybind',
+      title: 'Переключение режима прицеливания САУ', desc: 'Смена вида сверху и траекторного вида при игре на САУ' },
+    { key: 'bind_CMD_STOP_UNTIL_FIRE', tab: 'controls', cat: 'fire_keys', type: 'keybind',
+      title: 'Остановка для выстрела', desc: 'Временная остановка танка с продолжением движения после выстрела' },
+
+    // Клавиши: Боекомплект и снаряжение
+    { key: 'bind_CMD_AMMO_CHOICE_1', tab: 'controls', cat: 'slot_keys', type: 'keybind',
+      title: 'Боеприпасы: слот 1', desc: 'Выбор первого типа снарядов' },
+    { key: 'bind_CMD_AMMO_CHOICE_2', tab: 'controls', cat: 'slot_keys', type: 'keybind',
+      title: 'Боеприпасы: слот 2', desc: 'Выбор второго типа снарядов' },
+    { key: 'bind_CMD_AMMO_CHOICE_3', tab: 'controls', cat: 'slot_keys', type: 'keybind',
+      title: 'Боеприпасы: слот 3', desc: 'Выбор третьего типа снарядов' },
+    { key: 'bind_CMD_AMMO_CHOICE_4', tab: 'controls', cat: 'slot_keys', type: 'keybind',
+      title: 'Снаряжение: слот 1 (клавиша 4)', desc: 'Использование снаряжения в первом слоте' },
+    { key: 'bind_CMD_AMMO_CHOICE_5', tab: 'controls', cat: 'slot_keys', type: 'keybind',
+      title: 'Снаряжение: слот 2 (клавиша 5)', desc: 'Использование снаряжения во втором слоте' },
+    { key: 'bind_CMD_AMMO_CHOICE_6', tab: 'controls', cat: 'slot_keys', type: 'keybind',
+      title: 'Снаряжение: слот 3 (клавиша 6)', desc: 'Использование снаряжения в третьем слоте' },
+
+    // Клавиши: Чат и миникарта
+    { key: 'bind_CMD_RADIAL_MENU_SHOW', tab: 'controls', cat: 'ui_keys', type: 'keybind',
+      title: 'Меню быстрых команд', desc: 'Вызов кругового меню тактических команд (розы команд)' },
+    { key: 'bind_CMD_CHAT_SHORTCUT_COMMON_COMMAND', tab: 'controls', cat: 'ui_keys', type: 'keybind',
+      title: 'Быстрая контекстная команда', desc: 'Передача быстрого тактического сигнала по цели или точке местности' },
+    { key: 'bind_CMD_VOICECHAT_MUTE', tab: 'controls', cat: 'ui_keys', type: 'keybind',
+      title: 'Активация голосовой связи', desc: 'Клавиша включения микрофона (Push-to-Talk) в голосовом чате' },
+    { key: 'bind_CMD_TOGGLE_GUI', tab: 'controls', cat: 'ui_keys', type: 'keybind',
+      title: 'Отображение интерфейса в бою', desc: 'Скрыть или показать элементы боевого интерфейса' },
+    { key: 'bind_CMD_MINIMAP_SIZE_UP', tab: 'controls', cat: 'ui_keys', type: 'keybind',
+      title: 'Увеличить миникарту', desc: 'Увеличение размера миникарты в бою' },
+    { key: 'bind_CMD_MINIMAP_SIZE_DOWN', tab: 'controls', cat: 'ui_keys', type: 'keybind',
+      title: 'Уменьшить миникарту', desc: 'Уменьшение размера миникарты в бою' },
+    { key: 'bind_CMD_MINIMAP_VISIBLE', tab: 'controls', cat: 'ui_keys', type: 'keybind',
+      title: 'Скрыть / Показать миникарту', desc: 'Переключение видимости миникарты в бою' }
+  ];
+
+  // Человекочитаемые названия клавиш BigWorld
+  var KEY_LABELS = {
+    'KEY_NONE': 'Не назначено',
+    'KEY_LEFTMOUSE': 'ЛКМ (Мышь 1)',
+    'KEY_RIGHTMOUSE': 'ПКМ (Мышь 2)',
+    'KEY_MIDDLEMOUSE': 'СКМ (Колесо)',
+    'KEY_MOUSE3': 'СКМ (Колесо)',
+    'KEY_MOUSE4': 'Боковая мышь 4',
+    'KEY_MOUSE5': 'Боковая мышь 5',
+    'KEY_MOUSE6': 'Боковая мышь 6',
+    'KEY_MOUSE7': 'Боковая мышь 7',
+    'KEY_LSHIFT': 'Левый Shift',
+    'KEY_RSHIFT': 'Правый Shift',
+    'KEY_LCONTROL': 'Левый Ctrl',
+    'KEY_RCONTROL': 'Правый Ctrl',
+    'KEY_LALT': 'Левый Alt',
+    'KEY_RALT': 'Правый Alt',
+    'KEY_SPACE': 'Пробел (Space)',
+    'KEY_RETURN': 'Enter',
+    'KEY_TAB': 'Tab',
+    'KEY_CAPSLOCK': 'Caps Lock',
+    'KEY_BACKSPACE': 'Backspace',
+    'KEY_DELETE': 'Delete',
+    'KEY_INSERT': 'Insert',
+    'KEY_HOME': 'Home',
+    'KEY_END': 'End',
+    'KEY_PGUP': 'Page Up',
+    'KEY_PGDN': 'Page Down',
+    'KEY_UPARROW': 'Стрелка Вверх',
+    'KEY_DOWNARROW': 'Стрелка Вниз',
+    'KEY_LEFTARROW': 'Стрелка Влево',
+    'KEY_RIGHTARROW': 'Стрелка Вправо',
+    'KEY_EQUALS': '= (+)',
+    'KEY_MINUS': '- (_)',
+    'KEY_LBRACKET': '[ (Х)',
+    'KEY_RBRACKET': '] (Ъ)',
+    'KEY_SEMICOLON': '; (Ж)',
+    'KEY_APOSTROPHE': '\' (Э)',
+    'KEY_COMMA': ', (Б)',
+    'KEY_PERIOD': '. (Ю)',
+    'KEY_SLASH': '/ (.)',
+    'KEY_GRAVE': '~ (Ё)'
+  };
+
+  function formatKeyLabel(bwKey) {
+    if (!bwKey) return 'Не назначено';
+    if (KEY_LABELS[bwKey]) return KEY_LABELS[bwKey];
+    return String(bwKey).replace(/^KEY_/, '');
+  }
+
+  var JS_CODE_TO_BW = {
+    'Space': 'KEY_SPACE', 'ShiftLeft': 'KEY_LSHIFT', 'ShiftRight': 'KEY_RSHIFT',
+    'ControlLeft': 'KEY_LCONTROL', 'ControlRight': 'KEY_RCONTROL',
+    'AltLeft': 'KEY_LALT', 'AltRight': 'KEY_RALT', 'Tab': 'KEY_TAB',
+    'CapsLock': 'KEY_CAPSLOCK', 'Enter': 'KEY_RETURN', 'NumpadEnter': 'KEY_NUMPADENTER',
+    'ArrowUp': 'KEY_UPARROW', 'ArrowDown': 'KEY_DOWNARROW',
+    'ArrowLeft': 'KEY_LEFTARROW', 'ArrowRight': 'KEY_RIGHTARROW',
+    'Equal': 'KEY_EQUALS', 'Minus': 'KEY_MINUS',
+    'BracketLeft': 'KEY_LBRACKET', 'BracketRight': 'KEY_RBRACKET',
+    'Semicolon': 'KEY_SEMICOLON', 'Quote': 'KEY_APOSTROPHE',
+    'Backquote': 'KEY_GRAVE', 'Comma': 'KEY_COMMA', 'Period': 'KEY_PERIOD', 'Slash': 'KEY_SLASH',
+    'Insert': 'KEY_INSERT', 'Home': 'KEY_HOME', 'End': 'KEY_END',
+    'PageUp': 'KEY_PGUP', 'PageDown': 'KEY_PGDN'
+  };
+
+  function jsKeyEventToBwKey(e) {
+    var code = e.code || '';
+    if (JS_CODE_TO_BW[code]) return JS_CODE_TO_BW[code];
+    if (/^Key([A-Z])$/.test(code)) return 'KEY_' + code.slice(3);
+    if (/^Digit([0-9])$/.test(code)) return 'KEY_' + code.slice(5);
+    if (/^F([1-9]|1[0-2])$/.test(code)) return 'KEY_' + code;
+    if (/^Numpad([0-9])$/.test(code)) return 'KEY_NUMPAD' + code.slice(6);
+    var kc = e.keyCode || e.which || 0;
+    if (kc >= 65 && kc <= 90) return 'KEY_' + String.fromCharCode(kc);
+    if (kc >= 48 && kc <= 57) return 'KEY_' + String.fromCharCode(kc);
+    if (kc === 32) return 'KEY_SPACE';
+    if (kc === 16) return 'KEY_LSHIFT';
+    if (kc === 17) return 'KEY_LCONTROL';
+    if (kc === 18) return 'KEY_LALT';
+    if (kc === 9) return 'KEY_TAB';
+    if (kc === 20) return 'KEY_CAPSLOCK';
+    if (kc === 187) return 'KEY_EQUALS';
+    if (kc === 189) return 'KEY_MINUS';
+    if (kc >= 112 && kc <= 123) return 'KEY_F' + (kc - 111);
+    return null;
+  }
+
+  if (!window.initialState) {
+    window.initialState = {
+      fovStatic: 100, fovMin: 80, fovMax: 120, dynamicFov: false,
+      dynamicCamera: true, horStabilizationSnp: true, increasedZoom: true,
+      commanderCam: true, preCommanderCam: true, minimapAlphaEnabled: false,
+      carouselType: 1, RENDER_PIPELINE: 0, vertSync: false,
+      DRR_AUTOSCALER_ENABLED: false, TERRAIN_QUALITY: 0, FLORA_QUALITY: 0,
+      EFFECTS_QUALITY: 0, masterVolumeToggle: true, enableVoIP: false
+    };
+    window.currentState = {};
+    for (var ik in window.initialState) {
+      window.currentState[ik] = window.initialState[ik];
+    }
+    window.supported = null;
+  }
+
+  function isSupported(key) {
+    return window.supported === null || window.supported[key] === true;
+  }
+
+  // Точное определение причин неактивности параметров (как в оригинальных настройках игры)
+  function getLockReason(item) {
+    var s = window.currentState || {};
+    var k = item.key;
+
+    // 1. Внутриигровые зависимости между настройками
+    if (k === 'fovStatic' && s.dynamicFov) {
+      return 'Неактивно: включён параметр «Динамическое изменение угла обзора». Отключите его, чтобы задать фиксированный угол.';
+    }
+    if ((k === 'fovMin' || k === 'fovMax') && !s.dynamicFov) {
+      return 'Неактивно: требуется включить параметр «Динамическое изменение угла обзора».';
+    }
+    if ((k === 'horStabilizationSnp' || k === 'increasedZoom') && s.dynamicCamera === false) {
+      return 'Неактивно: работает только при включённом параметре «Включить динамическую камеру».';
+    }
+    if (k === 'preCommanderCam' && s.commanderCam === false) {
+      return 'Неактивно: работает только при включённом параметре «Командирская камера».';
+    }
+    if (k === 'minimapAlpha' && !s.minimapAlphaEnabled) {
+      return 'Неактивно: включите параметр «Включить прозрачность миникарты».';
+    }
+    if (k === 'doubleCarouselType' && Number(s.carouselType) === 0) {
+      return 'Неактивно: доступно только при выборе карусели техники «В 2 ряда».';
+    }
+    if (k === 'tripleBuffered' && !s.vertSync) {
+      return 'Неактивно: работает только при включённой «Вертикальной синхронизации».';
+    }
+    if (Number(s.RENDER_PIPELINE) === 1) {
+      var pbrOnly = {
+        'DRR_AUTOSCALER_ENABLED': true,
+        'dynamicRenderer': true,
+        'TERRAIN_TESSELLATION_ENABLED': true,
+        'SNIPER_MODE_TERRAIN_TESSELLATION_ENABLED': true,
+        'SHADOWS_QUALITY': true,
+        'LIGHTING_QUALITY': true,
+        'POST_PROCESSING_QUALITY': true,
+        'MOTION_BLUR_QUALITY': true,
+        'WATER_QUALITY': true,
+        'FLORA_QUALITY': true,
+        'SNIPER_MODE_GRASS_ENABLED': true,
+        'SEMITRANSPARENT_LEAVES_ENABLED': true
+      };
+      if (pbrOnly[k]) {
+        return 'Неактивно: параметр доступен только при выборе типа графики «Улучшенная».';
+      }
+    }
+    if (k === 'dynamicRenderer' && s.DRR_AUTOSCALER_ENABLED) {
+      return 'Неактивно: отключите «Динамическое изменение разрешения 3D-рендера» для ручной регулировки.';
+    }
+    if ((k === 'TERRAIN_TESSELLATION_ENABLED' || k === 'SNIPER_MODE_TERRAIN_TESSELLATION_ENABLED') && Number(s.TERRAIN_QUALITY) >= 4) {
+      return 'Неактивно: установите параметр «Качество ландшафта» выше минимального значения.';
+    }
+    if (k === 'SNIPER_MODE_GRASS_ENABLED' && Number(s.FLORA_QUALITY) >= 4) {
+      return 'Неактивно: установите параметр «Количество растительности» выше значения «Выкл».';
+    }
+    if (k === 'VEHICLE_DUST_ENABLED' && Number(s.EFFECTS_QUALITY) >= 4) {
+      return 'Неактивно: установите параметр «Качество дополнительных эффектов» выше минимального значения.';
+    }
+    if (item.tab === 'sound' && k !== 'masterVolumeToggle' && k !== 'subtitles' && s.masterVolumeToggle === false) {
+      return 'Неактивно: общий звук игры отключён. Включите параметр «Общий уровень звука».';
+    }
+    if ((k === 'masterVivoxVolume' || k === 'micVivoxVolume') && !s.enableVoIP) {
+      return 'Неактивно: требуется включить параметр «Включить голосовую связь».';
+    }
+
+    // 2. Ограничение со стороны клиента игры или оборудования
+    if (!isSupported(k)) {
+      if (item.tab === 'graphics') {
+        return 'Неактивно: параметр заблокирован клиентом игры (не поддерживается текущим пресетом рендера или видеокартой).';
+      }
+      if (item.tab === 'sound') {
+        return 'Неактивно: параметр недоступен для текущей конфигурации аудиосистемы клиента.';
+      }
+      return 'Неактивно: параметр недоступен в текущем режиме клиента игры.';
+    }
+
+    return null;
+  }
+
+  var activeTab = 'game';
+  var activeCategory = 'all';
+  var searchQuery = '';
+  var listeningKeyId = null;
+  var currentScale = 1;
+
+  var tabsBarEl = document.getElementById('tabsBar');
+  var sidebarEl = document.getElementById('sidebar');
+  var sidebarBodyEl = document.getElementById('sidebarBody');
+  var contentEl = document.getElementById('content');
+  var contentBodyEl = document.getElementById('contentBody');
+  var scrollTrackEl = document.getElementById('contentScrollTrack');
+  var scrollThumbEl = document.getElementById('contentScrollThumb');
+  var btnSave = document.getElementById('btnSave');
+  var btnReset = document.getElementById('btnReset');
+  var statusMsg = document.getElementById('statusMsg');
+  var connPill = document.getElementById('connPill');
+  var tooltipEl = document.getElementById('tooltip');
+  var ttTitle = document.getElementById('ttTitle');
+  var ttBody = document.getElementById('ttBody');
+  var ttLock = document.getElementById('ttLock');
+  var modalEl = document.getElementById('modalWindow');
+
+  // --- НАДЁЖНАЯ СИСТЕМА СКРОЛЛА (transform + кастомный скроллбар, без багов Gameface scrollTop/clientHeight) ---
+  var contentScrollY = 0;
+  var sidebarScrollY = 0;
+  var VIEWPORT_H = 546; // 582px высота области минус 36px вертикальные отступы
+  var TRACK_H = 562;
+
+  function getBodyHeight(bodyEl, fallbackCount) {
+    var rect = bodyEl.getBoundingClientRect();
+    var h = (rect && rect.height > 0) ? (rect.height / (currentScale || 1)) : 0;
+    if (!h || isNaN(h) || h < 10) {
+      h = (fallbackCount || bodyEl.children.length || 1) * 74;
+    }
+    return h;
+  }
+
+  function getContentMaxScroll() {
+    var bodyH = getBodyHeight(contentBodyEl);
+    var maxS = Math.max(0, Math.round(bodyH - VIEWPORT_H));
+    return isNaN(maxS) ? 0 : maxS;
+  }
+
+  function updateContentScrollUI() {
+    var maxS = getContentMaxScroll();
+    if (contentScrollY > maxS) contentScrollY = maxS;
+    if (contentScrollY < 0 || isNaN(contentScrollY)) contentScrollY = 0;
+
+    var y = Math.round(contentScrollY);
+    contentBodyEl.style.webkitTransform = 'translateY(' + (-y) + 'px)';
+    contentBodyEl.style.transform = 'translateY(' + (-y) + 'px)';
+
+    if (maxS <= 4) {
+      scrollTrackEl.style.display = 'none';
+    } else {
+      scrollTrackEl.style.display = 'block';
+      var bodyH = maxS + VIEWPORT_H;
+      var thumbH = Math.max(38, Math.round((VIEWPORT_H / bodyH) * TRACK_H));
+      var maxThumbTop = Math.max(1, TRACK_H - thumbH);
+      var thumbTop = Math.round((contentScrollY / maxS) * maxThumbTop);
+      scrollThumbEl.style.height = thumbH + 'px';
+      scrollThumbEl.style.top = thumbTop + 'px';
+    }
+  }
+
+  function setContentScroll(nextY) {
+    contentScrollY = nextY;
+    updateContentScrollUI();
+  }
+
+  // Перетаскивание ползунка скроллбара и клик по дорожке
+  (function initScrollbarDrag() {
+    var draggingThumb = false;
+    var dragStartY = 0;
+    var dragStartScroll = 0;
+
+    scrollThumbEl.onmousedown = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      draggingThumb = true;
+      scrollThumbEl.className = 'scroll-thumb dragging';
+      dragStartY = e.clientY;
+      dragStartScroll = contentScrollY;
+    };
+
+    scrollTrackEl.onmousedown = function (e) {
+      if (e.target === scrollThumbEl) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var tRect = scrollTrackEl.getBoundingClientRect();
+      var clickRatio = tRect.height > 0 ? (e.clientY - tRect.top) / tRect.height : 0;
+      var maxS = getContentMaxScroll();
+      setContentScroll(clickRatio * maxS);
+    };
+
+    document.addEventListener('mousemove', function (e) {
+      if (!draggingThumb) return;
+      var maxS = getContentMaxScroll();
+      if (maxS <= 0) return;
+      var tRect = scrollTrackEl.getBoundingClientRect();
+      var thumbRect = scrollThumbEl.getBoundingClientRect();
+      var availPx = Math.max(1, tRect.height - thumbRect.height);
+      var dy = e.clientY - dragStartY;
+      setContentScroll(dragStartScroll + (dy / availPx) * maxS);
+    });
+
+    document.addEventListener('mouseup', function () {
+      if (draggingThumb) {
+        draggingThumb = false;
+        scrollThumbEl.className = 'scroll-thumb';
+      }
+    });
+  }());
+
+  // Обработка колеса мыши (естественное направление по умолчанию в Gameface и браузере)
+  (function initWheelScroll() {
+    var lastWheelTs = 0;
+    var lastWheelType = '';
+    var isGamefaceEnv = (
+      typeof window.viewEnv !== 'undefined' ||
+      typeof window.engine !== 'undefined' ||
+      window.location.protocol === 'coui:'
+    );
+
+    function handleWheel(e) {
+      var now = Date.now ? Date.now() : (+new Date());
+      if (lastWheelType && lastWheelType !== e.type && (now - lastWheelTs) < 25) {
+        return;
+      }
+      lastWheelTs = now;
+      lastWheelType = e.type;
+
+      var raw = 0;
+      if (typeof e.deltaY === 'number' && e.deltaY !== 0) {
+        raw = e.deltaY;
+      } else if (typeof e.wheelDelta === 'number' && e.wheelDelta !== 0) {
+        raw = e.wheelDelta;
+      } else if (typeof e.detail === 'number' && e.detail !== 0) {
+        raw = e.detail;
+      }
+      if (raw === 0) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      hideHint();
+
+      // В Gameface при прокрутке колеса вниз на себе deltaY < 0; в обычном браузере deltaY > 0
+      var dir;
+      if (e.type === 'wheel' && !isGamefaceEnv) {
+        dir = raw > 0 ? 1 : -1;
+      } else {
+        dir = raw < 0 ? 1 : -1;
+      }
+
+      var step = 96;
+      setContentScroll(contentScrollY + dir * step);
+    }
+
+    window.addEventListener('wheel', handleWheel, true);
+    window.addEventListener('mousewheel', handleWheel, true);
+  }());
+
+  window.__cbs = window.__cbs || {};
+  window.__ackCount = 0;
+  window.__ack = function (id, ok) {
+    window.__ackCount++;
+    connPill.textContent = 'Связь с клиентом: Активна';
+    connPill.className = 'conn-pill';
+    var f = window.__cbs[id];
+    if (f) { delete window.__cbs[id]; try { f(!!ok); } catch (e) {} }
+  };
+
+  function send(url, data, cb) {
+    if (typeof window.postJSON !== 'function') {
+      if (cb) cb(false);
+      return;
+    }
+    var wrapped;
+    if (cb) {
+      var done = false;
+      var timer = setTimeout(function () { if (!done) { done = true; cb(true); } }, 450);
+      wrapped = function (ok) { if (done) return; done = true; clearTimeout(timer); cb(ok); };
+    }
+    window.postJSON(url, data, wrapped);
+  }
+
+  function applyCapturedKey(bindKey, bwKeyName) {
+    if (!bindKey || listeningKeyId !== bindKey) return;
+    listeningKeyId = null;
+    send('/api/listen_key', { key: '' });
+    if (bwKeyName && bwKeyName !== 'CANCEL') {
+      window.currentState[bindKey] = bwKeyName;
+    }
+    renderContent(true);
+    updateFooterState();
+  }
+
+  window.__onPythonKeyCaptured = function (bindTarget, capturedKey) {
+    applyCapturedKey(bindTarget, capturedKey);
+  };
+
+  // Захват клавиш на стороне JS + поддержка прокрутки стрелками и PageUp/PageDown
+  window.addEventListener('keydown', function (e) {
+    var kc = e.keyCode || e.which || 0;
+    if (listeningKeyId) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (kc === 27 || e.key === 'Escape') {
+        applyCapturedKey(listeningKeyId, 'CANCEL');
+        return;
+      }
+      if (kc === 8 || kc === 46 || e.key === 'Backspace' || e.key === 'Delete') {
+        applyCapturedKey(listeningKeyId, 'KEY_NONE');
+        return;
+      }
+      var bw = jsKeyEventToBwKey(e);
+      if (bw) {
+        applyCapturedKey(listeningKeyId, bw);
+      }
+      return;
+    }
+
+    if (document.activeElement === document.getElementById('searchInput')) {
+      return;
+    }
+    if (kc === 34 || e.key === 'PageDown') {
+      setContentScroll(contentScrollY + 360);
+    } else if (kc === 33 || e.key === 'PageUp') {
+      setContentScroll(contentScrollY - 360);
+    } else if (kc === 40 || e.key === 'ArrowDown') {
+      setContentScroll(contentScrollY + 80);
+    } else if (kc === 38 || e.key === 'ArrowUp') {
+      setContentScroll(contentScrollY - 80);
+    }
+  }, true);
+
+  function getModifiedCount() {
+    var n = 0;
+    for (var key in window.currentState) {
+      if (window.currentState[key] !== window.initialState[key]) n++;
+    }
+    return n;
+  }
+
+  function updateFooterState() {
+    var n = getModifiedCount();
+    btnSave.className = 'btn btn-primary' + (n === 0 ? ' disabled' : '');
+    btnSave.textContent = n > 0 ? 'Применить (' + n + ')' : 'Применить';
+    btnReset.style.display = n > 0 ? 'inline-block' : 'none';
+    if (window.model && window.__bridgeDiag && window.__bridgeDiag.stateLen > 0) {
+      connPill.textContent = 'Связь с клиентом: Активна';
+      connPill.className = 'conn-pill';
+    }
+  }
+  window.updateFooterState = updateFooterState;
+
+  function showHint(item, lockReason, clientX, clientY) {
+    ttTitle.textContent = item.title;
+    ttBody.textContent = item.hint || item.desc;
+    if (lockReason) {
+      ttLock.style.display = 'block';
+      ttLock.textContent = lockReason;
+    } else {
+      ttLock.style.display = 'none';
+      ttLock.textContent = '';
+    }
+    tooltipEl.style.display = 'block';
+
+    var rect = modalEl.getBoundingClientRect();
+    var scale = rect.width / 1140 || 1;
+    var rx = (clientX - rect.left) / scale + 16;
+    var ry = (clientY - rect.top) / scale - 10;
+    if (rx + 330 > 1120) rx = rx - 350;
+    if (ry + 150 > 690) ry = 530;
+    if (ry < 10) ry = 10;
+    tooltipEl.style.left = Math.round(rx) + 'px';
+    tooltipEl.style.top = Math.round(ry) + 'px';
+  }
+
+  function hideHint() {
+    tooltipEl.style.display = 'none';
+  }
+
+  function renderTabs() {
+    tabsBarEl.innerHTML = '';
+    TABS.forEach(function (tab) {
+      var btn = document.createElement('div');
+      btn.className = 'tab-btn' + (activeTab === tab.id && !searchQuery ? ' active' : '');
+      btn.innerHTML = tab.icon + '<span>' + tab.title + '</span>';
+      btn.onclick = function () {
+        activeTab = tab.id;
+        activeCategory = 'all';
+        contentScrollY = 0;
+        if (searchQuery) {
+          searchQuery = '';
+          document.getElementById('searchInput').value = '';
+        }
+        renderTabs();
+        renderSidebar();
+        renderContent(true);
+      };
+      tabsBarEl.appendChild(btn);
+    });
+  }
+  window.renderTabs = renderTabs;
+
+  function renderSidebar() {
+    sidebarBodyEl.innerHTML = '';
+    var lbl = document.createElement('div');
+    lbl.className = 'sidebar-label';
+    lbl.textContent = 'Разделы вкладки';
+    sidebarBodyEl.appendChild(lbl);
+
+    var cats = CATEGORIES[activeTab] || [];
+    cats.forEach(function (cat) {
+      var count = SETTINGS_SCHEMA.filter(function (i) {
+        return i.tab === activeTab && (cat.id === 'all' || i.cat === cat.id);
+      }).length;
+      var btn = document.createElement('div');
+      btn.className = 'nav-item' + (activeCategory === cat.id ? ' active' : '');
+      btn.innerHTML = '<div class="row row-between"><div class="row"><span class="nav-dot"></span><span>' +
+        cat.title + '</span></div><span class="nav-count">' + count + '</span></div>';
+      btn.onclick = function () {
+        activeCategory = cat.id;
+        contentScrollY = 0;
+        renderSidebar();
+        renderContent(true);
+      };
+      sidebarBodyEl.appendChild(btn);
+    });
+  }
+  window.renderSidebar = renderSidebar;
+
+  function getCategoryTitle(tabId, catId) {
+    var list = CATEGORIES[tabId] || [];
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id === catId) return list[i].title;
+    }
+    return '';
+  }
+
+  function renderContent(preserveScroll) {
+    var savedScroll = preserveScroll ? contentScrollY : contentScrollY;
+    contentBodyEl.innerHTML = '';
+    var q = searchQuery.toLowerCase();
+    var lastGroup = null, shown = 0;
+
+    SETTINGS_SCHEMA.forEach(function (item) {
+      var matchTab = q ? true : (item.tab === activeTab);
+      var matchCat = q ? true : (activeCategory === 'all' || item.cat === activeCategory);
+      var matchSearch = !q ||
+        item.title.toLowerCase().indexOf(q) !== -1 ||
+        item.desc.toLowerCase().indexOf(q) !== -1 ||
+        (item.hint && item.hint.toLowerCase().indexOf(q) !== -1);
+
+      if (!matchTab || !matchCat || !matchSearch) return;
+      shown++;
+
+      var groupKey = item.tab + ':' + item.cat;
+      if ((activeCategory === 'all' || q) && groupKey !== lastGroup) {
+        var h = document.createElement('div');
+        h.className = 'section-header' + (lastGroup === null ? ' first' : '');
+        h.textContent = getCategoryTitle(item.tab, item.cat);
+        contentBodyEl.appendChild(h);
+        lastGroup = groupKey;
+      }
+
+      var lockReason = getLockReason(item);
+      var locked = !!lockReason;
+      var card = document.createElement('div');
+      var refreshCard = function () {
+        card.className = 'card' +
+          (window.currentState[item.key] !== window.initialState[item.key] ? ' modified' : '') +
+          (locked ? ' locked' : '');
+      };
+      refreshCard();
+
+      if (locked) {
+        card.onmouseenter = function (e) { showHint(item, lockReason, e.clientX, e.clientY); };
+        card.onmousemove = function (e) { showHint(item, lockReason, e.clientX, e.clientY); };
+        card.onmouseleave = hideHint;
+      }
+
+      var row = document.createElement('div');
+      row.className = 'row row-between';
+      var info = document.createElement('div');
+      info.className = 'card-info fill';
+
+      var titleRow = document.createElement('div');
+      titleRow.className = 'card-title-row';
+
+      var tSpan = document.createElement('span');
+      tSpan.className = 'card-title';
+      tSpan.textContent = item.title;
+      titleRow.appendChild(tSpan);
+
+      var qBadge = document.createElement('div');
+      qBadge.className = 'hint-icon';
+      qBadge.innerHTML = INFO_SVG;
+      qBadge.onmouseenter = function (e) { showHint(item, lockReason, e.clientX, e.clientY); };
+      qBadge.onmousemove = function (e) { showHint(item, lockReason, e.clientX, e.clientY); };
+      qBadge.onmouseleave = hideHint;
+      titleRow.appendChild(qBadge);
+
+      var dDiv = document.createElement('div');
+      dDiv.className = 'card-desc';
+      dDiv.textContent = item.desc;
+
+      info.appendChild(titleRow);
+      info.appendChild(dDiv);
+
+      if (locked && lockReason) {
+        var lockBadge = document.createElement('div');
+        lockBadge.className = 'card-lock-reason';
+        lockBadge.innerHTML = LOCK_SVG + '<span>' + lockReason + '</span>';
+        info.appendChild(lockBadge);
+      }
+
+      row.appendChild(info);
+
+      if (item.type === 'toggle') {
+        var sw = document.createElement('div');
+        var knob = document.createElement('div');
+        knob.className = 'knob';
+        sw.appendChild(knob);
+        sw.className = 'card-control switch' + (window.currentState[item.key] ? ' on' : '');
+        if (!locked) {
+          sw.onclick = function () {
+            var v = !window.currentState[item.key];
+            window.currentState[item.key] = v;
+            renderContent(true);
+            updateFooterState();
+          };
+        }
+        row.appendChild(sw);
+
+      } else if (item.type === 'range') {
+        var wrap = document.createElement('div');
+        wrap.className = 'card-control row';
+        var rng = document.createElement('div');
+        rng.className = 'range';
+        var track = document.createElement('div'); track.className = 'track';
+        var fill = document.createElement('div'); fill.className = 'fill';
+        var thumb = document.createElement('div'); thumb.className = 'thumb';
+        rng.appendChild(track); rng.appendChild(fill); rng.appendChild(thumb);
+        var valSpan = document.createElement('span');
+        valSpan.className = 'range-val';
+
+        var setRange = function (v) {
+          v = Math.max(item.min, Math.min(item.max, Math.round(v)));
+          var pct = (v - item.min) / (item.max - item.min) * 100;
+          fill.style.width = pct + '%';
+          thumb.style.left = pct + '%';
+          valSpan.textContent = v + (item.unit || '');
+          return v;
+        };
+        var initVal = window.currentState[item.key];
+        setRange(initVal !== undefined ? Number(initVal) : item.min);
+
+        if (!locked) {
+          var dragging = false;
+          var fromX = function (clientX) {
+            var r = track.getBoundingClientRect();
+            var ratio = r.width > 0 ? (clientX - r.left) / r.width : 0;
+            var v = setRange(item.min + Math.max(0, Math.min(1, ratio)) * (item.max - item.min));
+            window.currentState[item.key] = v;
+            refreshCard();
+            updateFooterState();
+          };
+          rng.onmousedown = function (e) { dragging = true; fromX(e.clientX); };
+          document.addEventListener('mousemove', function (e) { if (dragging) fromX(e.clientX); });
+          document.addEventListener('mouseup', function () { if (dragging) dragging = false; });
+        }
+        wrap.appendChild(rng);
+        wrap.appendChild(valSpan);
+        row.appendChild(wrap);
+
+      } else if (item.type === 'segment') {
+        var bGroup = document.createElement('div');
+        bGroup.className = 'card-control btn-group';
+        item.options.forEach(function (opt, idx) {
+          var b = document.createElement('div');
+          var isLast = idx === item.options.length - 1;
+          b.className = 'opt-btn' + (Number(window.currentState[item.key]) === opt.v ? ' active' : '') + (isLast ? ' last' : '');
+          b.textContent = opt.l;
+          if (!locked) {
+            b.onclick = function () {
+              window.currentState[item.key] = opt.v;
+              renderContent(true);
+              updateFooterState();
+            };
+          }
+          bGroup.appendChild(b);
+        });
+        row.appendChild(bGroup);
+
+      } else if (item.type === 'keybind') {
+        var kbWrap = document.createElement('div');
+        kbWrap.className = 'card-control keybind-wrap';
+        var curKeyStr = window.currentState[item.key] || 'KEY_NONE';
+        var isListening = listeningKeyId === item.key;
+
+        var kbBtn = document.createElement('div');
+        kbBtn.className = 'keybind-btn' +
+          (isListening ? ' listening' : '') +
+          (curKeyStr === 'KEY_NONE' && !isListening ? ' unbound' : '');
+        kbBtn.textContent = isListening ? 'Нажмите клавишу...' : formatKeyLabel(curKeyStr);
+
+        if (!locked) {
+          kbBtn.onmousedown = function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (listeningKeyId === item.key) {
+              var mouseMap = { 0: 'KEY_LEFTMOUSE', 1: 'KEY_MIDDLEMOUSE', 2: 'KEY_RIGHTMOUSE', 3: 'KEY_MOUSE4', 4: 'KEY_MOUSE5' };
+              applyCapturedKey(item.key, mouseMap[e.button] || 'KEY_LEFTMOUSE');
+            } else {
+              listeningKeyId = item.key;
+              send('/api/listen_key', { key: item.key });
+              renderContent(true);
+            }
+          };
+
+          var clrBtn = document.createElement('div');
+          clrBtn.className = 'keybind-clear';
+          clrBtn.title = 'Очистить привязку клавиши';
+          clrBtn.innerHTML = CLEAR_SVG;
+          clrBtn.onclick = function (e) {
+            e.stopPropagation();
+            listeningKeyId = null;
+            send('/api/listen_key', { key: '' });
+            window.currentState[item.key] = 'KEY_NONE';
+            renderContent(true);
+            updateFooterState();
+          };
+          kbWrap.appendChild(kbBtn);
+          kbWrap.appendChild(clrBtn);
+        } else {
+          kbWrap.appendChild(kbBtn);
+        }
+        row.appendChild(kbWrap);
+      }
+
+      card.appendChild(row);
+      contentBodyEl.appendChild(card);
+    });
+
+    if (!shown) {
+      var e = document.createElement('div');
+      e.className = 'empty';
+      e.textContent = 'По вашему запросу ничего не найдено.';
+      contentBodyEl.appendChild(e);
+    }
+
+    contentScrollY = savedScroll;
+    updateContentScrollUI();
+    setTimeout(updateContentScrollUI, 16);
+  }
+  window.renderContent = renderContent;
+
+  document.getElementById('searchInput').oninput = function (e) {
+    searchQuery = e.target.value.trim();
+    contentScrollY = 0;
+    renderTabs();
+    renderContent(true);
+  };
+
+  btnReset.onclick = function () {
+    listeningKeyId = null;
+    for (var k in window.initialState) {
+      window.currentState[k] = window.initialState[k];
+    }
+    renderContent(true);
+    updateFooterState();
+  };
+
+  btnSave.onclick = function () {
+    if (getModifiedCount() === 0) return;
+    btnSave.className = 'btn btn-primary disabled';
+    send('/api/apply', window.currentState, function (ok) {
+      if (!ok) {
+        statusMsg.textContent = 'Ошибка сохранения';
+        statusMsg.style.color = '#ef4444';
+      } else {
+        for (var k in window.currentState) {
+          window.initialState[k] = window.currentState[k];
+        }
+        statusMsg.textContent = 'Настройки применены!';
+        statusMsg.style.color = '#4ade80';
+      }
+      renderContent(true);
+      updateFooterState();
+      statusMsg.className = 'status-msg show';
+      setTimeout(function () { statusMsg.className = 'status-msg'; }, 2400);
+    });
+  };
+
+  var legacyEl = document.getElementById('chkLegacy');
+  legacyEl.onclick = function () {
+    var on = legacyEl.className.indexOf(' on') < 0;
+    legacyEl.className = 'legacy-label' + (on ? ' on' : '');
+    if (on) send('/api/use_legacy', { permanent: true });
+  };
+
+  document.getElementById('btnClose').onclick = function () {
+    send('/api/close', {});
+  };
+
+  var PANEL_W = 1140, PANEL_H = 710;
+  function fitPanel() {
+    var vw = window.innerWidth || document.documentElement.clientWidth || PANEL_W;
+    var vh = window.innerHeight || document.documentElement.clientHeight || PANEL_H;
+    var k = Math.min(Math.min(vw / PANEL_W, vh / PANEL_H) * 0.92, 2.5);
+    currentScale = k || 1;
+    var x = Math.round((vw - PANEL_W * k) / 2);
+    var y = Math.round((vh - PANEL_H * k) / 2);
+    modalEl.style.left = x + 'px';
+    modalEl.style.top = y + 'px';
+    modalEl.style.webkitTransform = modalEl.style.transform = 'scale(' + k + ')';
+    updateContentScrollUI();
+  }
+
+  window.addEventListener('resize', fitPanel);
+  fitPanel();
+  setTimeout(fitPanel, 250);
+
+  renderTabs();
+  renderSidebar();
+  renderContent(true);
+  updateFooterState();
+</script>
+</body>
+</html>
