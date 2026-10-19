@@ -40,10 +40,11 @@ OpenWG Gameface (net.openwg.gameface_x.x.x.mtmod) - https://gitlab.com/openwg/wo
 Установка
 Убедитесь, что в папке mods/<версия_игры>/ установлен мод openwg.gameface.
 Поместите файл modern_settings.mtmod в папку Мир_Танков/mods/<текущая_версия_игры>/.
-A:\Games\Tanki\
+\Tanki\
 ├── mods\
 │   └── 1.45.0.0\
-│       └── net.openwg.gameface_1.2.2.mtmod   <-- библиотека остаётся здесь
+|       └── modern_settings.mtmod
+│       └── net.openwg.gameface_1.2.2.mtmod
 │
 └── res_mods\
     └── 1.45.0.0\
@@ -51,8 +52,8 @@ A:\Games\Tanki\
         │   └── gameface\
         │       └── mods\
         │           └── modern_settings\
-        │               ├── index.html         <-- веб-интерфейс
-        │               └── bridge.js          <-- скрипт-мост
+        │               ├── index.html 
+        │               └── bridge.js 
         ├── mods\
         │   └── configs\
         │       └── res_map\
