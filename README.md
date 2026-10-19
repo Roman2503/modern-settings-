@@ -57,7 +57,7 @@ OpenWG Gameface (net.openwg.gameface_x.x.x.mtmod) - https://gitlab.com/openwg/wo
         ├── mods\
         │   └── configs\
         │       └── res_map\
-        │           └── modern_settings.json   <-- конфиг регистрации окна
+        │           └── modern_settings.json
         └── scripts\
             └── client\
                 └── gui\
