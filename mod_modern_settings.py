@@ -4,6 +4,7 @@
 from __future__ import absolute_import
 
 import json
+import os
 import traceback
 
 import BigWorld
@@ -23,9 +24,10 @@ from openwg_gameface import ModDynAccessor
 
 
 TAG = '[ModernSettings]'
-VERSION = 'GF-2.2'
+VERSION = 'GF-2.4'
 WINDOW_MODE = 'fullscreen'
 RES_MAP_ITEM_ID = 'MODERN_SETTINGS_WINDOW'
+UI_PREFS_PATH = os.path.join('mods', 'configs', 'modern_settings', 'ui_prefs.json')
 
 SENSITIVITY_KEYS = (
     'mouseArcadeSens',
@@ -34,11 +36,23 @@ SENSITIVITY_KEYS = (
     'mouseFreeCamSens',
 )
 
+DEFAULT_RESOLUTIONS = [
+    '1280x720',
+    '1366x768',
+    '1600x900',
+    '1920x1080',
+    '2560x1440',
+    '3840x2160',
+]
+
 # Альтернативные имена ключей в ISettingsCore (ключ UI -> кортеж возможных имён в клиенте)
 SETTING_KEY_ALIASES = {
     'musicVolume': ('music', 'musicVolume'),
     'artilleryBulbVoices': ('artyBulbVoices', 'artilleryBulbVoices'),
     'dynamicRenderer': ('dynamicRenderer', 'DynamicRenderer'),
+    'windowMode': ('windowMode',),
+    'refreshRate': ('refreshRate',),
+    'interfaceScale': ('interfaceScale',),
 }
 
 # Команды управления из CommandMapping (ключ в UI -> (список кандидатов команд в CommandMapping, клавиша по умолчанию))
@@ -100,6 +114,7 @@ SETTINGS_DEFAULTS = {
     'showSectorOnMap': True,
     'showVehicleHPinMinimap': 1,
     'showVehicleHPinPlayersPanel': 1,
+    'showVehiclesCounter': True,
     'showDamageIcon': True,
     'enableSpeedometer': True,
     'enableRepairTimer': True,
@@ -109,6 +124,7 @@ SETTINGS_DEFAULTS = {
     'chatContactsListOnly': False,
     'receiveFriendshipRequest': True,
     'receiveInvitesInBattle': True,
+    'receiveClanInvitesNotifications': True,
     'replayEnabled': 2,
     'carouselType': 1,
     'doubleCarouselType': 0,
@@ -117,6 +133,9 @@ SETTINGS_DEFAULTS = {
     'hangarCamParallaxEnabled': True,
 
     # --- ВКЛАДКА: ГРАФИКА ---
+    'windowMode': 1,
+    'refreshRate': 60,
+    'interfaceScale': 0,
     'RENDER_PIPELINE': 0,
     'vertSync': False,
     'tripleBuffered': True,
@@ -174,7 +193,17 @@ SETTINGS_DEFAULTS = {
 
 g_state = {
     'fovTuple': (120, 80.0, 100.0),
-    'settings': dict(SETTINGS_DEFAULTS, fovStatic=100, fovMin=80, fovMax=120),
+    'settings': dict(
+        SETTINGS_DEFAULTS,
+        fovStatic=100,
+        fovMin=80,
+        fovMax=120,
+        screenResolution='1920x1080',
+        uiTheme='amber',
+        uiFontScale=0
+    ),
+    'resolutions': list(DEFAULT_RESOLUTIONS),
+    'uiPrefs': {'uiTheme': 'amber', 'uiFontScale': 0},
     'rawTypes': {},
     'realKeyMap': {},
     'resolvedBinds': {},
@@ -215,6 +244,33 @@ def _clean_unicode(obj):
     return obj
 
 
+def _load_ui_prefs():
+    try:
+        if os.path.isfile(UI_PREFS_PATH):
+            with open(UI_PREFS_PATH, 'rb') as f:
+                data = _clean_unicode(json.loads(f.read().decode('utf-8')))
+                if isinstance(data, dict):
+                    g_state['uiPrefs']['uiTheme'] = str(data.get('uiTheme', 'amber'))
+                    g_state['uiPrefs']['uiFontScale'] = int(data.get('uiFontScale', 0))
+    except Exception:
+        pass
+
+
+def _save_ui_prefs(theme_name=None, font_scale=None):
+    try:
+        if theme_name is not None:
+            g_state['uiPrefs']['uiTheme'] = str(theme_name)
+        if font_scale is not None:
+            g_state['uiPrefs']['uiFontScale'] = int(font_scale)
+        folder = os.path.dirname(UI_PREFS_PATH)
+        if folder and not os.path.isdir(folder):
+            os.makedirs(folder)
+        with open(UI_PREFS_PATH, 'wb') as f:
+            f.write(json.dumps(g_state['uiPrefs'], ensure_ascii=True, indent=2).encode('utf-8'))
+    except Exception:
+        pass
+
+
 def dlog(message):
     try:
         with open('modern_settings_debug.txt', 'ab') as stream:
@@ -251,6 +307,126 @@ def _key_code_to_name(key_code):
     return 'KEY_NONE'
 
 
+def _read_screen_resolution_info():
+    """Читает текущее разрешение экрана, режим окна и список поддерживаемых разрешений монитора."""
+    cur_w, cur_h = 1920, 1080
+    cur_wm = 1
+    cur_rr = 60
+    pairs = set()
+
+    for item in DEFAULT_RESOLUTIONS:
+        try:
+            pw, ph = [int(x) for x in item.split('x')]
+            pairs.add((pw, ph))
+        except Exception:
+            pass
+
+    try:
+        ss = BigWorld.screenSize()
+        if isinstance(ss, (tuple, list)) and len(ss) >= 2:
+            cur_w, cur_h = int(ss[0]), int(ss[1])
+            if cur_w >= 1024 and cur_h >= 720:
+                pairs.add((cur_w, cur_h))
+    except Exception:
+        pass
+
+    try:
+        from gui.shared.utils import graphics
+        ms = getattr(graphics, 'g_monitorSettings', None)
+        if ms is not None:
+            wm = getattr(ms, 'windowMode', None)
+            if wm is not None:
+                cur_wm = int(wm)
+
+            if cur_wm == 0:
+                ws = getattr(ms, 'currentWindowSize', None)
+                if ws is not None and getattr(ws, 'width', 0) and getattr(ws, 'height', 0):
+                    cur_w, cur_h = int(ws.width), int(ws.height)
+            elif cur_wm == 2:
+                bs = getattr(ms, 'currentBorderlessSize', None)
+                if bs is not None and getattr(bs, 'width', 0) and getattr(bs, 'height', 0):
+                    cur_w, cur_h = int(bs.width), int(bs.height)
+            else:
+                vm = getattr(ms, 'currentVideoMode', None)
+                if vm is not None and getattr(vm, 'width', 0) and getattr(vm, 'height', 0):
+                    cur_w, cur_h = int(vm.width), int(vm.height)
+                    if getattr(vm, 'refreshRate', 0):
+                        cur_rr = int(vm.refreshRate)
+
+            for m in getattr(ms, 'videoModes', []) or []:
+                mw = int(getattr(m, 'width', 0) or 0)
+                mh = int(getattr(m, 'height', 0) or 0)
+                if mw >= 1024 and mh >= 720:
+                    pairs.add((mw, mh))
+
+            for w in getattr(ms, 'windowSizes', []) or []:
+                ww = int(getattr(w, 'width', 0) or (w[0] if isinstance(w, (tuple, list)) else 0))
+                wh = int(getattr(w, 'height', 0) or (w[1] if isinstance(w, (tuple, list)) else 0))
+                if ww >= 1024 and wh >= 720:
+                    pairs.add((ww, wh))
+    except Exception:
+        pass
+
+    pairs.add((cur_w, cur_h))
+    sorted_pairs = sorted(list(pairs), key=lambda p: (p[0] * p[1], p[0], p[1]))
+    # Оставляем до 8 наиболее актуальных разрешений (включая текущее), чтобы кнопки помещались аккуратно
+    res_strings = ['%dx%d' % (w, h) for (w, h) in sorted_pairs]
+    cur_res_str = '%dx%d' % (cur_w, cur_h)
+    if len(res_strings) > 8:
+        filtered = [r for r in res_strings if r in DEFAULT_RESOLUTIONS or r == cur_res_str]
+        for r in res_strings[-4:]:
+            if r not in filtered:
+                filtered.append(r)
+        filtered.sort(key=lambda s: int(s.split('x')[0]) * int(s.split('x')[1]))
+        res_strings = filtered[:8]
+
+    return cur_res_str, cur_wm, cur_rr, res_strings
+
+
+def _apply_screen_resolution(new_res_str, new_wm, new_rr=None):
+    """Применяет выбранное разрешение экрана и режим окна через g_monitorSettings и BigWorld."""
+    try:
+        parts = [int(x) for x in str(new_res_str).split('x')]
+        if len(parts) != 2:
+            return
+        target_w, target_h = parts[0], parts[1]
+        target_wm = int(new_wm) if new_wm is not None else 1
+
+        try:
+            from gui.shared.utils import graphics
+            ms = getattr(graphics, 'g_monitorSettings', None)
+            if ms is not None:
+                if hasattr(ms, 'changeWindowMode'):
+                    try:
+                        ms.changeWindowMode(target_wm)
+                    except Exception:
+                        pass
+                if target_wm == 0 and hasattr(ms, 'changeWindowSize'):
+                    for ws in getattr(ms, 'windowSizes', []) or []:
+                        if int(getattr(ws, 'width', 0)) == target_w and int(getattr(ws, 'height', 0)) == target_h:
+                            ms.changeWindowSize(ws)
+                            break
+                elif target_wm == 1 and hasattr(ms, 'changeVideoMode'):
+                    best_vm = None
+                    for vm in getattr(ms, 'videoModes', []) or []:
+                        if int(getattr(vm, 'width', 0)) == target_w and int(getattr(vm, 'height', 0)) == target_h:
+                            best_vm = vm
+                            if new_rr and int(getattr(vm, 'refreshRate', 0)) == int(new_rr):
+                                break
+                    if best_vm is not None:
+                        ms.changeVideoMode(best_vm)
+        except Exception as ms_exc:
+            dlog('g_monitorSettings apply fallback: %s' % ms_exc)
+
+        try:
+            if hasattr(BigWorld, 'resizeWindow'):
+                BigWorld.resizeWindow(target_w, target_h)
+        except Exception:
+            pass
+    except Exception as exc:
+        dlog('_apply_screen_resolution error: %s' % exc)
+
+
 def _read_raw_setting(settings_core, ui_key):
     candidates = SETTING_KEY_ALIASES.get(ui_key, (ui_key,))
     for candidate in candidates:
@@ -261,7 +437,6 @@ def _read_raw_setting(settings_core, ui_key):
         except Exception:
             pass
 
-    # Резервное чтение графических настроек напрямую через модуль graphics
     try:
         from gui.shared.utils import graphics
         for candidate in candidates:
@@ -276,6 +451,7 @@ def _read_raw_setting(settings_core, ui_key):
 
 def read_settings_from_core():
     try:
+        _load_ui_prefs()
         from skeletons.account_helpers.settings_core import ISettingsCore
         settings_core = dependency.instance(ISettingsCore)
 
@@ -284,6 +460,13 @@ def read_settings_from_core():
         raw_types = {}
         real_key_map = {}
         resolved_binds = {}
+
+        cur_res, cur_wm, cur_rr, res_list = _read_screen_resolution_info()
+        g_state['resolutions'] = res_list
+        current['screenResolution'] = cur_res
+        current['windowMode'] = cur_wm
+        current['refreshRate'] = cur_rr
+        supported.extend(['screenResolution', 'windowMode', 'refreshRate'])
 
         try:
             fov = settings_core.getSetting('fov')
@@ -312,21 +495,22 @@ def read_settings_from_core():
                 elif isinstance(value, bool):
                     current[key] = bool(value)
                 elif key == 'minimapAlpha':
-                    # В клиенте minimapAlpha может храниться как 0..100 или 0.0..100.0
                     current[key] = max(0, min(100, int(round(float(value)))))
                 elif isinstance(value, float):
                     current[key] = int(round(value))
                 else:
                     current[key] = value
-                supported.append(key)
+                if key not in supported:
+                    supported.append(key)
             elif value is not None and isinstance(value, basestring) and key == 'altVoices':
                 raw_types[key] = str
                 current[key] = 0 if str(value) in ('default', '0', '') else 1
-                supported.append(key)
+                if key not in supported:
+                    supported.append(key)
             else:
-                current[key] = default_value
+                if key not in current:
+                    current[key] = default_value
 
-        # Читаем привязки клавиш из CommandMapping.g_instance
         cmd_map = getattr(CommandMapping, 'g_instance', None)
         for ui_key, (cmd_candidates, default_key_str) in KEYBIND_COMMANDS.items():
             if isinstance(cmd_candidates, basestring):
@@ -348,12 +532,16 @@ def read_settings_from_core():
             else:
                 current[ui_key] = default_key_str
 
+        current['uiTheme'] = g_state['uiPrefs'].get('uiTheme', 'amber')
+        current['uiFontScale'] = g_state['uiPrefs'].get('uiFontScale', 0)
+        supported.extend(['uiTheme', 'uiFontScale'])
+
         g_state['settings'] = current
         g_state['rawTypes'] = raw_types
         g_state['realKeyMap'] = real_key_map
         g_state['resolvedBinds'] = resolved_binds
         g_state['supportedKeys'] = supported
-        dlog('Прочитано настроек: %d' % len(supported))
+        dlog('Прочитано настроек: %d, разрешение: %s' % (len(supported), cur_res))
     except Exception:
         traceback.print_exc()
         log('Ошибка чтения настроек: %s' % traceback.format_exc(), 'err')
@@ -392,6 +580,25 @@ def apply_settings_to_core(new_data):
         real_key_map = g_state.get('realKeyMap', {})
         resolved_binds = g_state.get('resolvedBinds', {})
 
+        if 'uiTheme' in new_data or 'uiFontScale' in new_data:
+            _save_ui_prefs(
+                new_data.get('uiTheme', current.get('uiTheme', 'amber')),
+                new_data.get('uiFontScale', current.get('uiFontScale', 0))
+            )
+
+        res_changed = (
+            'screenResolution' in new_data and
+            str(new_data['screenResolution']) != str(current.get('screenResolution', ''))
+        )
+        wm_changed = (
+            'windowMode' in new_data and
+            int(new_data['windowMode']) != int(current.get('windowMode', 1))
+        )
+        rr_changed = (
+            'refreshRate' in new_data and
+            int(new_data['refreshRate']) != int(current.get('refreshRate', 60))
+        )
+
         # 1. FOV
         old_fov = g_state.get('fovTuple', (120, 80.0, 100.0))
         fov_changed = False
@@ -417,7 +624,7 @@ def apply_settings_to_core(new_data):
 
         # 2. Остальные параметры и клавиши
         for key in supported:
-            if key in ('fovStatic', 'fovMin', 'fovMax', 'dynamicFov'):
+            if key in ('fovStatic', 'fovMin', 'fovMax', 'dynamicFov', 'screenResolution', 'uiTheme', 'uiFontScale'):
                 continue
             if key not in new_data:
                 continue
@@ -440,8 +647,15 @@ def apply_settings_to_core(new_data):
                 diff[rk_alpha_en] = bool(
                     new_data.get('minimapAlphaEnabled', current.get('minimapAlphaEnabled', False)))
 
-        total_changed = len(diff) + len(bind_diff)
-        dlog('apply: diff=%s, binds=%s' % (repr(list(diff.keys())), repr(bind_diff)))
+        if res_changed or wm_changed or rr_changed:
+            _apply_screen_resolution(
+                new_data.get('screenResolution', current.get('screenResolution', '1920x1080')),
+                new_data.get('windowMode', current.get('windowMode', 1)),
+                new_data.get('refreshRate', current.get('refreshRate', 60))
+            )
+
+        total_changed = len(diff) + len(bind_diff) + (1 if res_changed else 0)
+        dlog('apply: diff=%s, binds=%s, res_changed=%s' % (repr(list(diff.keys())), repr(bind_diff), res_changed))
 
         if diff:
             try:
@@ -515,6 +729,8 @@ def apply_settings_to_core(new_data):
 
             read_settings_from_core()
             log('Сохранено и применено параметров: %d' % total_changed)
+        else:
+            read_settings_from_core()
 
         return True
     except Exception as exc:
@@ -526,7 +742,8 @@ def apply_settings_to_core(new_data):
 def _state_payload():
     return json.dumps({
         'settings': g_state.get('settings', {}),
-        'supported': g_state.get('supportedKeys') or None
+        'supported': g_state.get('supportedKeys') or None,
+        'resolutions': g_state.get('resolutions') or DEFAULT_RESOLUTIONS,
     }, ensure_ascii=True, separators=(',', ':'))
 
 
@@ -625,6 +842,13 @@ class ModernSettingsViewModel(ViewModel):
             if command == 'listen_key':
                 target = _to_text(data.get('key', ''))
                 g_state['listeningBind'] = target if target else None
+                self.send_ack(message_id, True)
+                return
+
+            if command == 'save_theme':
+                _save_ui_prefs(data.get('uiTheme'), data.get('uiFontScale'))
+                g_state['settings']['uiTheme'] = g_state['uiPrefs'].get('uiTheme', 'amber')
+                g_state['settings']['uiFontScale'] = g_state['uiPrefs'].get('uiFontScale', 0)
                 self.send_ack(message_id, True)
                 return
 
@@ -779,7 +1003,6 @@ def handle_key_event(event):
         if not event.isKeyDown() or event.isRepeatedEvent():
             return
 
-        # Если окно сейчас ждёт нажатия клавиши для переназначения управления
         listening_target = g_state.get('listeningBind')
         if g_window is not None and listening_target:
             g_state['listeningBind'] = None
@@ -830,6 +1053,7 @@ def init():
     if _initialized[0]:
         return
     _initialized[0] = True
+    _load_ui_prefs()
     log('Мод запущен (%s). F9 — окно, F10 — смена режима' % VERSION)
 
     try:
