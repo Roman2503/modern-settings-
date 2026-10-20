@@ -35,7 +35,8 @@
     }
 
     function applyStateJson(raw) {
-        if (!raw || raw === lastState) {
+        var uiReady = typeof window.renderContent === 'function';
+        if (!raw || (raw === lastState && uiReady && window.__stateAppliedOnce)) {
             return;
         }
 
@@ -63,6 +64,10 @@
         window.initialState = initial;
         window.currentState = current;
 
+        if (injected.resolutions && injected.resolutions.length) {
+            window.availableResolutions = injected.resolutions.slice();
+        }
+
         if (injected.supported && injected.supported.length) {
             var supportedMap = {};
             for (var i = 0; i < injected.supported.length; i++) {
@@ -73,21 +78,27 @@
             window.supported = null;
         }
 
-        try {
-            if (typeof window.renderTabs === 'function') {
-                window.renderTabs();
+        if (uiReady) {
+            window.__stateAppliedOnce = true;
+            try {
+                if (typeof window.applyThemeFromState === 'function') {
+                    window.applyThemeFromState();
+                }
+                if (typeof window.renderTabs === 'function') {
+                    window.renderTabs();
+                }
+                if (typeof window.renderSidebar === 'function') {
+                    window.renderSidebar();
+                }
+                if (typeof window.renderContent === 'function') {
+                    window.renderContent(true);
+                }
+                if (typeof window.updateFooterState === 'function') {
+                    window.updateFooterState();
+                }
+            } catch (e) {
+                warn('state render error: ' + e);
             }
-            if (typeof window.renderSidebar === 'function') {
-                window.renderSidebar();
-            }
-            if (typeof window.renderContent === 'function') {
-                window.renderContent();
-            }
-            if (typeof window.updateFooterState === 'function') {
-                window.updateFooterState();
-            }
-        } catch (e) {
-            warn('state render error: ' + e);
         }
     }
 
