@@ -17,7 +17,7 @@
   html, body {
     width: 100%;
     height: 100%;
-    background: rgba(6, 9, 14, 0.74);
+    background: rgba(5, 8, 13, 0.78);
     color: #f0f6fc;
     font-family: "Segoe UI", Tahoma, Arial, sans-serif;
     overflow: hidden;
@@ -25,18 +25,17 @@
     display: block;
   }
 
+  /* Окно рендерится 1:1 в целых пикселях БЕЗ transform:scale(), чтобы шрифты и иконки были идеально чёткими */
   .modal-window {
     position: absolute;
     top: 0;
     left: 0;
-    -webkit-transform-origin: 0 0;
-    transform-origin: 0 0;
-    width: 1140px;
-    height: 710px;
-    background: #0d1117;
-    border: 1px solid #283242;
-    border-radius: 14px;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+    width: 1200px;
+    height: 740px;
+    background: #0c1017;
+    border: 1px solid #263042;
+    border-radius: 12px;
+    box-shadow: 0 26px 64px rgba(0, 0, 0, 0.92);
     overflow: hidden;
     display: block;
   }
@@ -45,22 +44,23 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 1140px;
-    height: 66px;
-    background: #121721;
-    border-bottom: 1px solid #222b3a;
+    width: 1200px;
+    height: 68px;
+    background: #111722;
+    border-bottom: 1px solid #222c3c;
     padding: 0 20px;
     display: block;
+    z-index: 40;
   }
 
   .sidebar {
     position: absolute;
-    top: 66px;
+    top: 68px;
     left: 0;
-    width: 245px;
-    height: 582px;
-    background: #11161f;
-    border-right: 1px solid #222b3a;
+    width: 268px;
+    height: 610px;
+    background: #0f141e;
+    border-right: 1px solid #222c3c;
     padding: 14px 12px;
     overflow: hidden;
     display: block;
@@ -68,11 +68,11 @@
 
   .content {
     position: absolute;
-    top: 66px;
-    left: 245px;
-    width: 895px;
-    height: 582px;
-    padding: 18px 26px 18px 24px;
+    top: 68px;
+    left: 268px;
+    width: 932px;
+    height: 610px;
+    padding: 18px 26px 18px 22px;
     overflow: hidden;
     display: block;
   }
@@ -84,14 +84,14 @@
     transform: translateY(0px);
   }
 
-  /* Кастомный скроллбар для надёжной прокрутки в Gameface */
+  /* Кастомный скроллбар */
   .scroll-track {
     position: absolute;
     top: 10px;
     right: 6px;
     width: 7px;
-    height: 562px;
-    background: rgba(255, 255, 255, 0.04);
+    height: 590px;
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 4px;
     cursor: pointer;
     z-index: 25;
@@ -103,25 +103,22 @@
     left: 0;
     width: 7px;
     min-height: 36px;
-    background: #2e3b52;
+    background: #364560;
     border-radius: 4px;
     cursor: pointer;
-  }
-  .scroll-track:hover .scroll-thumb,
-  .scroll-thumb.dragging {
-    background: #60a5fa;
   }
 
   .footer {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 1140px;
+    width: 1200px;
     height: 62px;
-    background: #121721;
-    border-top: 1px solid #222b3a;
+    background: #111722;
+    border-top: 1px solid #222c3c;
     padding: 0 20px;
     display: block;
+    z-index: 40;
   }
 
   .row {
@@ -138,15 +135,40 @@
     justify-content: space-between;
   }
   .fill { -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; }
-  .topbar .row-main { height: 65px; }
+  .topbar .row-main { height: 67px; }
   .footer .row-main { height: 61px; }
 
+  .brand-wrap {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    margin-right: 16px;
+  }
+  .brand-emblem {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    margin-right: 10px;
+    background: rgba(245, 158, 11, 0.16);
+    border: 1px solid rgba(245, 158, 11, 0.42);
+  }
   .brand {
     font-size: 15px;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.6px;
     color: #f0f6fc;
-    margin-right: 16px;
   }
 
   /* Вкладки в шапке */
@@ -154,11 +176,11 @@
   .tab-btn {
     background: transparent;
     border: 1px solid transparent;
-    color: #8b949e;
+    color: #9ca3af;
     padding: 8px 14px;
     margin-right: 6px;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 13.5px;
     font-weight: 600;
     cursor: pointer;
     display: -webkit-box;
@@ -168,42 +190,130 @@
     -webkit-align-items: center;
     align-items: center;
   }
-  .tab-btn:hover { background: #192130; color: #e6edf3; }
-  .tab-btn.active {
-    background: rgba(59, 130, 246, 0.16);
-    border-color: rgba(59, 130, 246, 0.4);
-    color: #60a5fa;
+  .tab-btn:hover { background: #192231; color: #f0f6fc; }
+  .tab-icon-wrap {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    margin-right: 8px;
   }
-  .tab-icon { width: 15px; height: 15px; margin-right: 7px; fill: currentColor; }
+
+  /* Кнопки кастомизации и фильтра в шапке */
+  .top-action-btn {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    height: 34px;
+    padding: 0 11px;
+    margin-right: 8px;
+    border-radius: 8px;
+    background: #161e2c;
+    border: 1px solid #283448;
+    color: #c9d1d9;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .top-action-btn:hover { border-color: #4b5b76; color: #ffffff; background: #1b2536; }
+  .theme-dot-preview {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    margin-right: 7px;
+    background: #fbbf24;
+  }
+
+  /* Выпадающая панель выбора цветовой темы и размера шрифта */
+  #themePopup {
+    display: none;
+    position: absolute;
+    top: 62px;
+    right: 255px;
+    width: 320px;
+    background: #101622;
+    border: 1px solid #384863;
+    border-radius: 10px;
+    padding: 14px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.94);
+    z-index: 280;
+  }
+  .tp-title {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: #8b949e;
+    margin-bottom: 8px;
+  }
+  .tp-grid {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .tp-swatch {
+    width: 140px;
+    padding: 7px 9px;
+    margin: 0 6px 6px 0;
+    border-radius: 7px;
+    background: #161e2d;
+    border: 1px solid #263144;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+  }
+  .tp-swatch:hover { background: #1c2638; border-color: #4b5d7e; }
+  .tp-swatch.active { border-color: #f0f6fc; background: #222e44; }
+  .tp-color {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin-right: 8px;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+  }
+  .tp-name { font-size: 12px; font-weight: 600; color: #e6edf3; }
 
   /* Поиск */
-  .search-box { position: relative; width: 250px; display: block; }
+  .search-box { position: relative; width: 225px; display: block; }
   .search-box input {
     width: 100%;
+    height: 34px;
     background: #0b0e14;
     border: 1px solid #283242;
     color: #f0f6fc;
-    padding: 7px 12px 7px 30px;
+    padding: 6px 12px 6px 30px;
     border-radius: 8px;
-    font-size: 12px;
+    font-size: 12.5px;
     outline: none;
     display: block;
   }
-  .search-box input:focus { border-color: #3b82f6; }
-  .search-icon {
+  .search-icon-wrap {
     position: absolute;
     left: 10px;
-    top: 9px;
-    width: 13px;
-    height: 13px;
-    fill: #6e7681;
+    top: 10px;
+    width: 14px;
+    height: 14px;
     pointer-events: none;
   }
 
-  /* Сайдбар */
+  /* Сайдбар с иконками разделов */
   .sidebar-label {
     display: block;
-    font-size: 10px;
+    font-size: 10.5px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.8px;
@@ -214,68 +324,163 @@
     display: block;
     width: 100%;
     background: transparent;
-    color: #8b949e;
-    padding: 10px 12px;
+    border: 1px solid transparent;
+    color: #9ca3af;
+    padding: 9px 11px;
     margin-bottom: 4px;
     border-radius: 8px;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
   }
-  .nav-item:hover { background: #18202d; color: #f0f6fc; }
-  .nav-item.active {
-    background: rgba(59, 130, 246, 0.15);
-    color: #60a5fa;
-    font-weight: 600;
+  .nav-item:hover { background: #171f2e; color: #f0f6fc; }
+  .nav-icon-wrap {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    margin-right: 9px;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
   }
-  .nav-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #3b4659;
-    margin-right: 10px;
-  }
-  .nav-item.active .nav-dot { background: #60a5fa; }
   .nav-count {
     font-size: 11px;
-    background: #1c2433;
+    background: #1a2232;
     color: #8b949e;
     padding: 2px 7px;
     border-radius: 10px;
   }
-  .nav-item.active .nav-count { background: rgba(59, 130, 246, 0.25); color: #93c5fd; }
 
   .section-header {
-    display: block;
-    font-size: 11px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    font-size: 11.5px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.7px;
-    color: #60a5fa;
-    margin: 16px 0 8px 2px;
+    margin: 16px 0 9px 2px;
+    color: #fbbf24;
   }
   .section-header.first { margin-top: 0; }
+  .sec-icon-wrap {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    margin-right: 7px;
+  }
 
-  /* Карточка параметра */
+  /* Визуальный баннер-иллюстрация раздела (Миникарта, Экран/FOV) */
+  .visual-banner {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    background: #121824;
+    border: 1px solid #243044;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 11px;
+  }
+  .vb-info { padding-right: 16px; display: block; }
+  .vb-title { display: block; font-size: 13px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
+  .vb-desc { display: block; font-size: 12px; color: #8b949e; line-height: 1.38; }
+  .vb-legend {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .vb-pill {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: #c9d1d9;
+    background: #0b0f17;
+    border: 1px solid #232e42;
+    border-radius: 6px;
+    padding: 3px 8px;
+    margin: 0 6px 5px 0;
+  }
+  .vb-dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  .vb-canvas {
+    width: 156px;
+    height: 124px;
+    background: #0a0e15;
+    border: 1px solid #283449;
+    border-radius: 8px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  /* Карточка параметра с иконкой слева */
   .card {
     display: block;
-    background: #151b26;
-    border: 1px solid #222b3a;
-    border-left: 3px solid #222b3a;
+    background: #141b27;
+    border: 1px solid #222c3d;
+    border-left: 3px solid #222c3d;
     border-radius: 10px;
-    padding: 13px 16px;
-    margin-bottom: 9px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
   }
-  .card:hover { background: #192130; border-color: #2f3b4f; }
-  .card.modified { border-left-color: #3b82f6; background: #161f2e; }
+  .card:hover { background: #182130; border-color: #2f3d54; }
   .card.locked {
-    background: #121720;
-    border-color: #1e2634;
+    background: #111620;
+    border-color: #1d2533;
     border-left-color: #f59e0b;
   }
   .card.locked .card-control {
     opacity: 0.38;
     pointer-events: none;
+  }
+  .card-icon-badge {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    margin-right: 13px;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
   }
   .card-info { padding-right: 18px; display: block; }
   .card-title-row {
@@ -285,13 +490,40 @@
     -webkit-box-align: center;
     -webkit-align-items: center;
     align-items: center;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
   .card-title { font-size: 13.5px; font-weight: 600; color: #f0f6fc; margin-right: 8px; }
   .card.locked .card-title { color: #9ca3af; }
-  .card-desc { display: block; font-size: 12px; color: #8b949e; line-height: 1.35; }
+  .card-desc { display: block; font-size: 12px; color: #9ca3af; line-height: 1.35; }
 
-  /* Плашка причины неактивности параметра */
+  /* Кнопка индивидуального сброса параметра к исходному значению */
+  .card-revert-btn {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    padding: 2px 7px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #c9d1d9;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 4px;
+  }
+  .card-revert-btn:hover { background: rgba(239, 68, 68, 0.16); border-color: #ef4444; color: #fca5a5; }
+
+  /* Укрупнённый режим шрифта */
+  body.font-large .card-title { font-size: 15px; }
+  body.font-large .card-desc { font-size: 13px; }
+  body.font-large .nav-item { font-size: 14px; padding: 10px 11px; }
+  body.font-large .opt-btn { font-size: 13px; padding: 7px 12px; }
+  body.font-large .keybind-btn { font-size: 13.5px; }
+
+  /* Плашка причины неактивности параметра или конфликта клавиш */
   .card-lock-reason {
     display: -webkit-box;
     display: -webkit-flex;
@@ -309,16 +541,24 @@
     font-weight: 500;
     line-height: 1.3;
   }
-  .card-lock-reason svg {
-    width: 12px;
-    height: 12px;
-    fill: #fbbf24;
+  .card-lock-reason.conflict {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.35);
+    color: #f87171;
+  }
+  .lock-icon-wrap {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
     margin-right: 6px;
     -webkit-flex-shrink: 0;
     flex-shrink: 0;
   }
 
-  /* Ровная SVG-иконка подсказки */
+  /* Иконка подсказки */
   .hint-icon {
     display: -webkit-box;
     display: -webkit-flex;
@@ -332,29 +572,26 @@
     width: 18px;
     height: 18px;
     border-radius: 5px;
-    background: rgba(59, 130, 246, 0.12);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    color: #60a5fa;
     cursor: help;
-    margin-right: 8px;
+    margin-right: 6px;
+    background: rgba(245, 158, 11, 0.16);
+    border: 1px solid rgba(245, 158, 11, 0.42);
   }
-  .hint-icon:hover { background: #3b82f6; color: #ffffff; border-color: #60a5fa; }
-  .hint-icon svg { width: 11px; height: 11px; fill: currentColor; pointer-events: none; }
 
   /* Всплывающая подсказка */
   #tooltip {
     display: none;
     position: absolute;
     z-index: 300;
-    width: 320px;
+    width: 325px;
     background: #0b0e14;
-    border: 1px solid #3b82f6;
+    border: 1px solid #d97706;
     border-radius: 10px;
     padding: 12px 14px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.9);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.92);
     pointer-events: none;
   }
-  .tt-title { display: block; font-size: 13px; font-weight: 700; color: #60a5fa; margin-bottom: 5px; }
+  .tt-title { display: block; font-size: 13px; font-weight: 700; margin-bottom: 5px; color: #fbbf24; }
   .tt-body { display: block; font-size: 12px; color: #d0d7de; line-height: 1.4; margin-bottom: 6px; }
   .tt-lock {
     display: none;
@@ -382,7 +619,6 @@
     -webkit-flex-shrink: 0;
     flex-shrink: 0;
   }
-  .switch.on { background: #3b82f6; }
   .switch .knob {
     position: absolute;
     top: 3px;
@@ -394,23 +630,24 @@
     -webkit-transition: left .18s;
     transition: left .18s;
   }
+  .switch.on { background: #d97706; }
   .switch.on .knob { left: 23px; }
 
   /* Ползунок (Range) */
   .range-val {
     font-weight: 700;
-    color: #60a5fa;
     min-width: 48px;
     text-align: right;
     font-size: 13.5px;
     margin-left: 10px;
+    color: #fbbf24;
   }
   .range { position: relative; width: 175px; height: 22px; cursor: pointer; }
   .range .track { position: absolute; left: 0; right: 0; top: 8px; height: 6px; background: #263040; border-radius: 4px; }
-  .range .fill { position: absolute; left: 0; top: 8px; height: 6px; background: #3b82f6; border-radius: 4px; }
-  .range .thumb { position: absolute; top: 3px; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; background: #60a5fa; box-shadow: 0 0 6px rgba(59,130,246,0.6); }
+  .range .fill { position: absolute; left: 0; top: 8px; height: 6px; border-radius: 4px; background: #d97706; }
+  .range .thumb { position: absolute; top: 3px; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; background: #fbbf24; }
 
-  /* Кнопки выбора вариантов (всегда в виде кнопок) */
+  /* Кнопки выбора вариантов */
   .btn-group {
     display: -webkit-box;
     display: -webkit-flex;
@@ -425,6 +662,14 @@
     border-radius: 8px;
     padding: 3px;
   }
+  .btn-group.wrap-res {
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
+    max-width: 430px;
+  }
   .opt-btn {
     padding: 6px 10px;
     border-radius: 6px;
@@ -432,12 +677,12 @@
     font-weight: 600;
     color: #8b949e;
     cursor: pointer;
-    margin-right: 2px;
+    margin: 1px 2px;
     white-space: nowrap;
   }
   .opt-btn.last { margin-right: 0; }
   .opt-btn:hover { color: #f0f6fc; background: #161d29; }
-  .opt-btn.active { background: #3b82f6; color: #ffffff; }
+  .opt-btn.active { background: #d97706; color: #ffffff; }
 
   /* Кнопка назначения клавиши (Keybind) */
   .keybind-wrap {
@@ -469,10 +714,9 @@
     border-radius: 8px;
     font-size: 12.5px;
     font-weight: 700;
-    color: #60a5fa;
+    color: #fbbf24;
     cursor: pointer;
   }
-  .keybind-btn:hover { border-color: #60a5fa; background: #131a26; color: #93c5fd; }
   .keybind-btn.listening {
     background: rgba(245, 158, 11, 0.16);
     border-color: #f59e0b;
@@ -480,7 +724,6 @@
   }
   .keybind-btn.unbound { color: #6e7681; font-weight: 500; }
 
-  /* Идеально отцентрированная SVG-кнопка очистки привязки клавиши */
   .keybind-clear {
     display: -webkit-box;
     display: -webkit-flex;
@@ -501,18 +744,10 @@
     color: #8b949e;
     cursor: pointer;
   }
-  .keybind-clear svg {
-    width: 12px;
-    height: 12px;
-    fill: currentColor;
-    display: block;
-    pointer-events: none;
-  }
   .keybind-clear:hover {
     border-color: #ef4444;
     border-bottom-color: #dc2626;
-    color: #f87171;
-    background: rgba(239, 68, 68, 0.12);
+    background: rgba(239, 68, 68, 0.14);
   }
 
   /* Нижняя панель */
@@ -532,7 +767,7 @@
     border-radius: 7px;
     margin-right: 10px;
   }
-  .legacy-label:hover { border-color: #60a5fa; color: #fff; }
+  .legacy-label:hover { border-color: #6e7681; color: #fff; }
   .legacy-box {
     display: inline-block;
     width: 14px;
@@ -542,7 +777,6 @@
     border-radius: 3px;
     background: #0d1117;
   }
-  .legacy-label.on .legacy-box { background: #3b82f6; border-color: #3b82f6; }
 
   .conn-pill {
     font-size: 11px;
@@ -564,8 +798,7 @@
     border: 1px solid transparent;
     margin-left: 8px;
   }
-  .btn-primary { background: #3b82f6; color: #fff; }
-  .btn-primary:hover { background: #2563eb; }
+  .btn-primary { background: #d97706; color: #fff; }
   .btn-primary.disabled { opacity: 0.42; cursor: default; }
   .btn-ghost { background: transparent; color: #8b949e; border-color: #2b3547; }
   .btn-ghost:hover { color: #f0f6fc; border-color: #485263; }
@@ -573,9 +806,46 @@
   .status-msg { font-size: 12.5px; font-weight: 600; color: #4ade80; margin-right: 8px; display: none; }
   .status-msg.show { display: inline-block; }
   .empty { display: block; color: #8b949e; font-size: 13px; padding: 36px 0; text-align: center; }
+
+  /* СТАТИЧЕСКИЕ КЛАССЫ 6 ЦВЕТОВЫХ ТЕМ ДЛЯ 100% ПОДДЕРЖКИ В COHERENT GAMEFACE */
+  body.theme-amber .tab-btn.active, body.theme-amber .nav-item.active, body.theme-amber .top-action-btn.active { background: rgba(245, 158, 11, 0.16); border-color: rgba(245, 158, 11, 0.45); color: #fbbf24; }
+  body.theme-amber .section-header, body.theme-amber .range-val, body.theme-amber .keybind-btn, body.theme-amber .tt-title { color: #fbbf24; }
+  body.theme-amber .switch.on, body.theme-amber .range .fill, body.theme-amber .opt-btn.active, body.theme-amber .btn-primary { background: #d97706; }
+  body.theme-amber .range .thumb { background: #fbbf24; }
+  body.theme-amber .card.modified { border-left-color: #d97706; background: #1c1917; }
+
+  body.theme-blue .tab-btn.active, body.theme-blue .nav-item.active, body.theme-blue .top-action-btn.active { background: rgba(59, 130, 246, 0.18); border-color: rgba(59, 130, 246, 0.48); color: #60a5fa; }
+  body.theme-blue .section-header, body.theme-blue .range-val, body.theme-blue .keybind-btn, body.theme-blue .tt-title { color: #60a5fa; }
+  body.theme-blue .switch.on, body.theme-blue .range .fill, body.theme-blue .opt-btn.active, body.theme-blue .btn-primary { background: #2563eb; }
+  body.theme-blue .range .thumb { background: #60a5fa; }
+  body.theme-blue .card.modified { border-left-color: #3b82f6; background: #131d31; }
+
+  body.theme-emerald .tab-btn.active, body.theme-emerald .nav-item.active, body.theme-emerald .top-action-btn.active { background: rgba(16, 185, 129, 0.18); border-color: rgba(16, 185, 129, 0.48); color: #34d399; }
+  body.theme-emerald .section-header, body.theme-emerald .range-val, body.theme-emerald .keybind-btn, body.theme-emerald .tt-title { color: #34d399; }
+  body.theme-emerald .switch.on, body.theme-emerald .range .fill, body.theme-emerald .opt-btn.active, body.theme-emerald .btn-primary { background: #059669; }
+  body.theme-emerald .range .thumb { background: #34d399; }
+  body.theme-emerald .card.modified { border-left-color: #10b981; background: #11221e; }
+
+  body.theme-crimson .tab-btn.active, body.theme-crimson .nav-item.active, body.theme-crimson .top-action-btn.active { background: rgba(239, 68, 68, 0.18); border-color: rgba(239, 68, 68, 0.48); color: #f87171; }
+  body.theme-crimson .section-header, body.theme-crimson .range-val, body.theme-crimson .keybind-btn, body.theme-crimson .tt-title { color: #f87171; }
+  body.theme-crimson .switch.on, body.theme-crimson .range .fill, body.theme-crimson .opt-btn.active, body.theme-crimson .btn-primary { background: #dc2626; }
+  body.theme-crimson .range .thumb { background: #f87171; }
+  body.theme-crimson .card.modified { border-left-color: #ef4444; background: #241419; }
+
+  body.theme-violet .tab-btn.active, body.theme-violet .nav-item.active, body.theme-violet .top-action-btn.active { background: rgba(139, 92, 246, 0.18); border-color: rgba(139, 92, 246, 0.48); color: #a78bfa; }
+  body.theme-violet .section-header, body.theme-violet .range-val, body.theme-violet .keybind-btn, body.theme-violet .tt-title { color: #a78bfa; }
+  body.theme-violet .switch.on, body.theme-violet .range .fill, body.theme-violet .opt-btn.active, body.theme-violet .btn-primary { background: #7c3aed; }
+  body.theme-violet .range .thumb { background: #a78bfa; }
+  body.theme-violet .card.modified { border-left-color: #8b5cf6; background: #1c162e; }
+
+  body.theme-cyan .tab-btn.active, body.theme-cyan .nav-item.active, body.theme-cyan .top-action-btn.active { background: rgba(6, 182, 212, 0.18); border-color: rgba(6, 182, 212, 0.48); color: #22d3ee; }
+  body.theme-cyan .section-header, body.theme-cyan .range-val, body.theme-cyan .keybind-btn, body.theme-cyan .tt-title { color: #22d3ee; }
+  body.theme-cyan .switch.on, body.theme-cyan .range .fill, body.theme-cyan .opt-btn.active, body.theme-cyan .btn-primary { background: #0891b2; }
+  body.theme-cyan .range .thumb { background: #22d3ee; }
+  body.theme-cyan .card.modified { border-left-color: #06b6d4; background: #112129; }
 </style>
 </head>
-<body>
+<body class="theme-amber">
 
   <div class="modal-window" id="modalWindow">
     <div id="tooltip">
@@ -584,15 +854,33 @@
       <div class="tt-lock" id="ttLock"></div>
     </div>
 
-    <div class="topbar">
+    <!-- Выпадающая панель кастомизации цветовой темы и шрифта -->
+    <div id="themePopup">
+      <div class="tp-title">Цветовая тема интерфейса</div>
+      <div class="tp-grid" id="themeGrid"></div>
+      <div class="tp-title" style="margin-top: 6px;">Размер текста и карточек</div>
+      <div class="btn-group" id="fontScaleGroup" style="width: 100%; justify-content: center;"></div>
+    </div>
+
+    <div class="topbar" id="topbar">
       <div class="row row-between row-main">
         <div class="row">
-          <div class="brand">НАСТРОЙКИ</div>
+          <div class="brand-wrap">
+            <div class="brand-emblem" id="brandEmblem"></div>
+            <div class="brand">НАСТРОЙКИ</div>
+          </div>
           <div class="tabs-bar" id="tabsBar"></div>
         </div>
         <div class="row">
+          <div class="top-action-btn" id="btnOnlyModified" title="Показать только изменённые в текущем сеансе параметры" style="display:none;">
+            <span id="onlyModifiedText">Изменённые (0)</span>
+          </div>
+          <div class="top-action-btn" id="btnThemePicker" title="Выбрать цветовую тему и размер шрифта">
+            <span class="theme-dot-preview" id="themeDotPreview"></span>
+            <span>Оформление</span>
+          </div>
           <div class="search-box">
-            <svg class="search-icon" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+            <div class="search-icon-wrap" id="searchIconWrap"></div>
             <input type="text" id="searchInput" placeholder="Поиск по параметрам...">
           </div>
         </div>
@@ -610,13 +898,13 @@
       </div>
     </div>
 
-    <div class="footer">
+    <div class="footer" id="footer">
       <div class="row row-between row-main">
         <div class="row">
           <div class="legacy-label" id="chkLegacy" title="Переключиться на стандартное окно настроек клиента">
-            <span class="legacy-box"></span><span>Классические настройки</span>
+            <span class="legacy-box" id="legacyBox"></span><span>Классические настройки</span>
           </div>
-          <div class="btn btn-ghost" id="btnReset" style="display:none;">Отменить правки</div>
+          <div class="btn btn-ghost" id="btnReset" style="display:none;">Отменить все правки</div>
         </div>
         <div class="row">
           <span class="conn-pill wait" id="connPill">Синхронизация...</span>
@@ -628,31 +916,154 @@
     </div>
   </div>
 
-<script src="coui://gui/gameface/mods/modern_settings/bridge.js"></script>
 <script>
-  var INFO_SVG = '<svg viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg>';
-  var LOCK_SVG = '<svg viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>';
-  var CLEAR_SVG = '<svg viewBox="0 0 16 16"><path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06z"/></svg>';
+  // Векторные пути всех иконок (цвет fill подставляется явно через функцию makeSvg для 100% совместимости с Gameface)
+  var SVG_PATHS = {
+    gear: 'M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z',
+    search: 'M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z',
+    info: 'M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z',
+    lock: 'M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z',
+    warn: 'M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z',
+    clear: 'M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06z',
+    // Иконки главных вкладок (обновлённые тактические)
+    tab_game: 'M8 0a.5.5 0 0 1 .5.5v1.518A6.5 6.5 0 0 1 13.982 7.5H15.5a.5.5 0 0 1 0 1h-1.518A6.5 6.5 0 0 1 8.5 13.982V15.5a.5.5 0 0 1-1 0v-1.518A6.5 6.5 0 0 1 2.018 8.5H.5a.5.5 0 0 1 0-1h1.518A6.5 6.5 0 0 1 7.5 2.018V.5A.5.5 0 0 1 8 0zm0 3a5 5 0 1 0 0 10A5 5 0 0 0 8 3zm0 2.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z',
+    tab_graphics: 'M1.5 2A1.5 1.5 0 0 0 0 3.5v7A1.5 1.5 0 0 0 1.5 12H6v1.5H4a.5.5 0 0 0 0 1h8a.5.5 0 0 0 0-1h-2V12h4.5A1.5 1.5 0 0 0 16 10.5v-7A1.5 1.5 0 0 0 14.5 2h-13zm.5 1.5h12v6.5H2V3.5zm2 4.5l2.5-3 2 2.5 1.5-1.5 2 2H4z',
+    tab_sound: 'M8 1a5 5 0 0 0-5 5v1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a6 6 0 1 1 12 0v6a2.5 2.5 0 0 1-2.5 2.5H9.366a1 1 0 0 1-.866.5h-1a1 1 0 1 1 0-2h1a1 1 0 0 1 .866.5H11.5A1.5 1.5 0 0 0 13 12h-1a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h1V6a5 5 0 0 0-5-5z',
+    tab_controls: 'M2 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H2zm1 2.5h1.5V7H3V5.5zm2.5 0H7V7H5.5V5.5zm2.5 0h1.5V7H8V5.5zm2.5 0H12V7h-1.5V5.5zM3 8h1.5v1.5H3V8zm2.5 0H7v1.5H5.5V8zm2.5 0h1.5v1.5H8V8zm2.5 0H13v1.5h-2.5V8zM4.5 10.5h7v1h-7v-1z',
+    // Иконки разделов и карточек
+    all: 'M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z',
+    camera: 'M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z',
+    minimap: 'M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm0-2A6 6 0 1 1 8 2a6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0-2a2 2 0 1 1 0-4 2 2 0 0 1 0 4z',
+    hud: 'M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524z',
+    chat: 'M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894z',
+    hangar: 'M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L8.707 1.5z',
+    display: 'M0 4s0-2 2-2h12s2 0 2 2v6s0 2-2 2h-4c0 .667.083 1.167.25 1.5H11a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1h.75c.167-.333.25-.833.25-1.5H2s-2 0-2-2V4zm2 0v6h12V4H2z',
+    quality: 'M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6z',
+    lighting: 'M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13z',
+    flora: 'M8.416.223a.5.5 0 0 0-.832 0l-3 4.5A.5.5 0 0 0 5 5.5h.098L3.076 8.735A.5.5 0 0 0 3.5 9.5h.191l-1.638 3.276a.5.5 0 0 0 .447.724H7V16h2v-2.5h4.5a.5.5 0 0 0 .447-.724L12.31 9.5h.191a.5.5 0 0 0 .424-.765L10.902 5.5H11a.5.5 0 0 0 .416-.777l-3-4.5z',
+    master: 'M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z',
+    mixer: 'M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z',
+    voices: 'M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z',
+    voip: 'M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0v5z',
+    sens: 'M8 3a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 3zm4 8a4 4 0 0 1-8 0V5a4 4 0 1 1 8 0v6zM8 0a5 5 0 0 0-5 5v6a5 5 0 0 0 10 0V5a5 5 0 0 0-5-5z',
+    move_keys: 'M14 5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h12zM2 4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H2z',
+    fire_keys: 'M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z M8 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z',
+    slot_keys: 'M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v4h10V2a1 1 0 0 0-1-1H4zm9 6H3v7a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7z',
+    ui_keys: 'M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2z'
+  };
+
+  function makeSvg(name, colorHex, sizePx) {
+    var d = SVG_PATHS[name] || SVG_PATHS.all;
+    var s = sizePx || 16;
+    var c = colorHex || '#9ca3af';
+    return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 16 16"><path fill="' + c + '" d="' + d + '"/></svg>';
+  }
+
+  // Палитра из 6 цветовых тем оформления окна настроек
+  var THEMES = {
+    amber: {
+      id: 'amber',
+      name: 'Янтарь (Танки)',
+      primary: '#d97706',
+      primaryHover: '#b45309',
+      light: '#fbbf24',
+      softBg: 'rgba(245, 158, 11, 0.16)',
+      softBorder: 'rgba(245, 158, 11, 0.45)',
+      winBorder: '#3b2f1e',
+      topBg: '#141720',
+      sideBg: '#10141d',
+      cardModBg: '#1c1917'
+    },
+    blue: {
+      id: 'blue',
+      name: 'Синий Сапфир',
+      primary: '#2563eb',
+      primaryHover: '#1d4ed8',
+      light: '#60a5fa',
+      softBg: 'rgba(59, 130, 246, 0.18)',
+      softBorder: 'rgba(59, 130, 246, 0.48)',
+      winBorder: '#1e3a5f',
+      topBg: '#0f1726',
+      sideBg: '#0c1320',
+      cardModBg: '#131d31'
+    },
+    emerald: {
+      id: 'emerald',
+      name: 'Изумруд',
+      primary: '#059669',
+      primaryHover: '#047857',
+      light: '#34d399',
+      softBg: 'rgba(16, 185, 129, 0.18)',
+      softBorder: 'rgba(16, 185, 129, 0.48)',
+      winBorder: '#164438',
+      topBg: '#0e1918',
+      sideBg: '#0b1414',
+      cardModBg: '#11221e'
+    },
+    crimson: {
+      id: 'crimson',
+      name: 'Гвардейский Алый',
+      primary: '#dc2626',
+      primaryHover: '#b91c1c',
+      light: '#f87171',
+      softBg: 'rgba(239, 68, 68, 0.18)',
+      softBorder: 'rgba(239, 68, 68, 0.48)',
+      winBorder: '#4c1d24',
+      topBg: '#191217',
+      sideBg: '#140e13',
+      cardModBg: '#241419'
+    },
+    violet: {
+      id: 'violet',
+      name: 'Кибер-Аметист',
+      primary: '#7c3aed',
+      primaryHover: '#6d28d9',
+      light: '#a78bfa',
+      softBg: 'rgba(139, 92, 246, 0.18)',
+      softBorder: 'rgba(139, 92, 246, 0.48)',
+      winBorder: '#36235c',
+      topBg: '#141222',
+      sideBg: '#100e1c',
+      cardModBg: '#1c162e'
+    },
+    cyan: {
+      id: 'cyan',
+      name: 'Стальной Циан',
+      primary: '#0891b2',
+      primaryHover: '#0e7490',
+      light: '#22d3ee',
+      softBg: 'rgba(6, 182, 212, 0.18)',
+      softBorder: 'rgba(6, 182, 212, 0.48)',
+      winBorder: '#164554',
+      topBg: '#0e1821',
+      sideBg: '#0b131b',
+      cardModBg: '#112129'
+    }
+  };
+
+  var currentThemeId = 'amber';
+  var currentFontScale = 0;
+  var filterOnlyModified = false;
 
   var TABS = [
-    { id: 'game', title: 'Игра', icon: '<svg class="tab-icon" viewBox="0 0 16 16"><path d="M11.5 6.027a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2.5-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm-6.5-3h1v1h1v1h-1v1h-1v-1h-1v-1h1v-1z"/><path d="M3.051 3.26a.5.5 0 0 1 .354-.613l1.932-.518a.5.5 0 0 1 .62.39c.655-.079 1.35-.117 2.043-.117.72 0 1.443.041 2.12.126a.5.5 0 0 1 .622-.399l1.932.518a.5.5 0 0 1 .306.729c.14.09.266.19.373.297.408.408.78 1.05 1.095 1.772.32.733.599 1.591.805 2.466.206.875.34 1.78.364 2.606.024.816-.059 1.602-.328 2.21a1.42 1.42 0 0 1-1.445.83c-.636-.067-1.115-.394-1.513-.773-.245-.232-.496-.526-.739-.808-.126-.148-.25-.292-.368-.423-.728-.804-1.597-1.527-3.224-1.527-1.627 0-2.496.723-3.224 1.527-.119.131-.242.275-.368.423-.243.282-.494.575-.739.808-.398.38-.877.706-1.513.773a1.42 1.42 0 0 1-1.445-.83c-.27-.608-.352-1.395-.329-2.21.024-.826.16-1.73.365-2.606.206-.875.486-1.733.805-2.466.315-.722.687-1.364 1.094-1.772a2.34 2.34 0 0 1 .433-.335.504.504 0 0 1-.028-.079z"/></svg>' },
-    { id: 'graphics', title: 'Графика', icon: '<svg class="tab-icon" viewBox="0 0 16 16"><path d="M0 4s0-2 2-2h12s2 0 2 2v6s0 2-2 2h-4c0 .667.083 1.167.25 1.5H11a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1h.75c.167-.333.25-.833.25-1.5H2s-2 0-2-2V4zm1.398-.855a.758.758 0 0 0-.254.302A1.46 1.46 0 0 0 1 4.01V10c0 .325.078.502.145.602.07.105.17.188.302.254a1.464 1.464 0 0 0 .538.143L2.01 11H14c.325 0 .502-.078.602-.145a.758.758 0 0 0 .254-.302 1.464 1.464 0 0 0 .143-.538L15 9.99V4c0-.325-.078-.502-.145-.602a.757.757 0 0 0-.302-.254A1.46 1.46 0 0 0 13.99 3H2c-.325 0-.502.078-.602.145z"/></svg>' },
-    { id: 'sound', title: 'Звук', icon: '<svg class="tab-icon" viewBox="0 0 16 16"><path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"/><path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"/><path d="M8.707 11.182A4.486 4.486 0 0 0 10.025 8a4.486 4.486 0 0 0-1.318-3.182L8 5.525A3.489 3.489 0 0 1 9.025 8 3.49 3.49 0 0 1 8 10.475l.707.707zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z"/></svg>' },
-    { id: 'controls', title: 'Управление', icon: '<svg class="tab-icon" viewBox="0 0 16 16"><path d="M14 5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h12zM2 4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H2z"/><path d="M13 10.25a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-.5zm0-2a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-.5zm-5 2A.25.25 0 0 1 8.25 10h.5a.25.25 0 0 1 .25.25v.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-.5zm-3.5.25a.25.25 0 0 1 .25-.25h3a.25.25 0 0 1 .25.25v.5a.25.25 0 0 1-.25.25h-3a.25.25 0 0 1-.25-.25v-.5z"/></svg>' }
+    { id: 'game', title: 'Игра', iconKey: 'tab_game' },
+    { id: 'graphics', title: 'Графика', iconKey: 'tab_graphics' },
+    { id: 'sound', title: 'Звук', iconKey: 'tab_sound' },
+    { id: 'controls', title: 'Управление', iconKey: 'tab_controls' }
   ];
 
   var CATEGORIES = {
     game: [
       { id: 'all', title: 'Все параметры' },
+      { id: 'chat', title: 'Общение и реплеи' },
       { id: 'camera', title: 'Камера и прицел' },
-      { id: 'minimap', title: 'Миникарта' },
       { id: 'hud', title: 'Боевой интерфейс' },
-      { id: 'chat', title: 'Боевой чат и реплеи' },
+      { id: 'minimap', title: 'Миникарта' },
       { id: 'hangar', title: 'Ангар и карусель' }
     ],
     graphics: [
       { id: 'all', title: 'Все параметры' },
-      { id: 'display', title: 'Экран и рендер' },
+      { id: 'display', title: 'Экран и обзор (FOV)' },
       { id: 'quality', title: 'Детализация и текстуры' },
       { id: 'lighting', title: 'Освещение и тени' },
       { id: 'flora', title: 'Растительность и эффекты' }
@@ -674,26 +1085,61 @@
     ]
   };
 
+  window.availableResolutions = [
+    '1280x720',
+    '1366x768',
+    '1600x900',
+    '1920x1080',
+    '2560x1440',
+    '3840x2160'
+  ];
+
+  function getResolutionOptions() {
+    var list = window.availableResolutions || [];
+    var cur = (window.currentState && window.currentState.screenResolution) || '1920x1080';
+    var res = [];
+    var seen = {};
+    for (var i = 0; i < list.length; i++) {
+      var r = String(list[i]);
+      if (!seen[r]) {
+        seen[r] = true;
+        res.push({ v: r, l: r.replace('x', ' × ') });
+      }
+    }
+    if (!seen[cur]) {
+      res.push({ v: cur, l: cur.replace('x', ' × ') });
+    }
+    return res;
+  }
+
   var OFF_ALT_ALWAYS = [{v: 0, l: 'Никогда'}, {v: 1, l: 'По Alt'}, {v: 2, l: 'Всегда'}];
   var QUALITY_5 = [{v: 0, l: 'Максимум'}, {v: 1, l: 'Высоко'}, {v: 2, l: 'Средне'}, {v: 3, l: 'Низко'}, {v: 4, l: 'Выкл / Мин'}];
   var QUALITY_4 = [{v: 0, l: 'Максимум'}, {v: 1, l: 'Высоко'}, {v: 2, l: 'Средне'}, {v: 3, l: 'Низко / Выкл'}];
 
-  // Строго оригинальные параметры игры «Мир танков» без кастомных дополнений
+  // Строго оригинальные параметры игры «Мир танков» 1 в 1 по вкладкам
   var SETTINGS_SCHEMA = [
     // ==================== ИГРА ====================
-    { key: 'fovStatic', tab: 'game', cat: 'camera', type: 'range', min: 60, max: 120, unit: '°',
-      title: 'Угол обзора (FOV)',
-      desc: 'Фиксированный горизонтальный угол обзора камеры в аркадном режиме',
-      hint: 'Задаёт постоянный угол обзора камеры при выключенном динамическом изменении угла обзора.' },
-    { key: 'dynamicFov', tab: 'game', cat: 'camera', type: 'toggle',
-      title: 'Динамическое изменение угла обзора',
-      desc: 'Автоматическое изменение угла обзора камеры в зависимости от скорости движения машины' },
-    { key: 'fovMin', tab: 'game', cat: 'camera', type: 'range', min: 60, max: 100, unit: '°',
-      title: 'Нижняя граница динамического FOV',
-      desc: 'Минимальный угол обзора при остановке или медленном движении танка' },
-    { key: 'fovMax', tab: 'game', cat: 'camera', type: 'range', min: 80, max: 120, unit: '°',
-      title: 'Верхняя граница динамического FOV',
-      desc: 'Максимальный угол обзора при движении танка на полной скорости' },
+    { key: 'disableBattleChat', tab: 'game', cat: 'chat', type: 'toggle',
+      title: 'Отключить текстовый чат (В случайных боях)',
+      desc: 'Скрывает текстовые сообщения игроков в случайных боях' },
+    { key: 'chatContactsListOnly', tab: 'game', cat: 'chat', type: 'toggle',
+      title: 'Принимать сообщения только из списка контактов',
+      desc: 'Блокирует личные сообщения в ангаре от игроков вне вашего списка друзей' },
+    { key: 'receiveFriendshipRequest', tab: 'game', cat: 'chat', type: 'toggle',
+      title: 'Принимать запросы на добавление в друзья в бою',
+      desc: 'Отображать входящие запросы на добавление в список контактов во время боя' },
+    { key: 'receiveInvitesInBattle', tab: 'game', cat: 'chat', type: 'toggle',
+      title: 'Принимать приглашения во взвод в бою',
+      desc: 'Разрешает игрокам отправлять вам приглашения в динамический взвод в бою' },
+    { key: 'receiveClanInvitesNotifications', tab: 'game', cat: 'chat', type: 'toggle',
+      title: 'Принимать уведомления о приглашениях в клан',
+      desc: 'Отображать входящие приглашения на вступление в клан в центре уведомлений' },
+    { key: 'replayEnabled', tab: 'game', cat: 'chat', type: 'segment',
+      options: [{v: 0, l: 'Никогда'}, {v: 1, l: 'Последний'}, {v: 2, l: 'Все бои'}],
+      title: 'Запись боёв для воспроизведения',
+      desc: 'Автоматическое сохранение записей боёв в папку replays игрового клиента' },
+
+    // Камера и прицел
     { key: 'dynamicCamera', tab: 'game', cat: 'camera', type: 'toggle',
       title: 'Включить динамическую камеру',
       desc: 'Плавная амортизация камеры при движении танка и отдача при выстрелах' },
@@ -724,6 +1170,29 @@
     { key: 'postMortemMode', tab: 'game', cat: 'camera', type: 'toggle',
       title: 'Показывать машину, уничтожившую ваш танк',
       desc: 'Автоматический показ танка противника после уничтожения вашей машины' },
+
+    // Боевой интерфейс
+    { key: 'showVehiclesCounter', tab: 'game', cat: 'hud', type: 'toggle',
+      title: 'Показывать панель счёта и техники в бою',
+      desc: 'Отображение верхней панели со счётом боя и иконками оставшейся техники команд' },
+    { key: 'showVehicleHPinPlayersPanel', tab: 'game', cat: 'hud', type: 'segment', options: OFF_ALT_ALWAYS,
+      title: 'Полосы прочности (ХП) в ушах команд',
+      desc: 'Отображение индикаторов запаса прочности танков в списках команд' },
+    { key: 'enableSpeedometer', tab: 'game', cat: 'hud', type: 'toggle',
+      title: 'Отображать спидометр',
+      desc: 'Показатель скорости движения рядом с панелью состояния машины' },
+    { key: 'enableRepairTimer', tab: 'game', cat: 'hud', type: 'toggle',
+      title: 'Отображать таймер ремонта модулей',
+      desc: 'Секундный отсчёт времени восстановления повреждённых модулей на панели танка' },
+    { key: 'showDamageIcon', tab: 'game', cat: 'hud', type: 'toggle',
+      title: 'Уведомления о критических попаданиях',
+      desc: 'Отображать иконки повреждённых модулей в боевой ленте событий' },
+    { key: 'showMarksOnGun', tab: 'game', cat: 'hud', type: 'toggle',
+      title: 'Скрывать отметки на стволах орудий',
+      desc: 'Управление отображением отличительных отметок на стволах орудий в бою' },
+    { key: 'c11nHistoricallyAccurate', tab: 'game', cat: 'hud', type: 'toggle',
+      title: 'Скрывать неисторичные элементы внешнего вида',
+      desc: 'Отображать в бою только историчные стили, декали и элементы кастомизации' },
 
     // Миникарта
     { key: 'minimapViewRange', tab: 'game', cat: 'minimap', type: 'toggle',
@@ -758,44 +1227,6 @@
       title: 'Уровень прозрачности миникарты',
       desc: 'Степень прозрачности подложки миникарты в боевом интерфейсе' },
 
-    // Боевой интерфейс
-    { key: 'showVehicleHPinPlayersPanel', tab: 'game', cat: 'hud', type: 'segment', options: OFF_ALT_ALWAYS,
-      title: 'Полосы прочности (ХП) в ушах команд',
-      desc: 'Отображение индикаторов запаса прочности танков в списках команд' },
-    { key: 'enableSpeedometer', tab: 'game', cat: 'hud', type: 'toggle',
-      title: 'Отображать спидометр',
-      desc: 'Показатель скорости движения рядом с панелью состояния машины' },
-    { key: 'enableRepairTimer', tab: 'game', cat: 'hud', type: 'toggle',
-      title: 'Отображать таймер ремонта модулей',
-      desc: 'Секундный отсчёт времени восстановления повреждённых модулей на панели танка' },
-    { key: 'showDamageIcon', tab: 'game', cat: 'hud', type: 'toggle',
-      title: 'Уведомления о критических попаданиях',
-      desc: 'Отображать иконки повреждённых модулей в боевой ленте событий' },
-    { key: 'showMarksOnGun', tab: 'game', cat: 'hud', type: 'toggle',
-      title: 'Скрывать отметки на стволах орудий',
-      desc: 'Управление отображением отличительных отметок на стволах орудий в бою' },
-    { key: 'c11nHistoricallyAccurate', tab: 'game', cat: 'hud', type: 'toggle',
-      title: 'Скрывать неисторичные элементы внешнего вида',
-      desc: 'Отображать в бою только историчные стили, декали и элементы кастомизации' },
-
-    // Боевой чат и реплеи
-    { key: 'replayEnabled', tab: 'game', cat: 'chat', type: 'segment',
-      options: [{v: 0, l: 'Никогда'}, {v: 1, l: 'Последний'}, {v: 2, l: 'Все бои'}],
-      title: 'Запись боёв для воспроизведения',
-      desc: 'Автоматическое сохранение записей боёв в папку replays игрового клиента' },
-    { key: 'disableBattleChat', tab: 'game', cat: 'chat', type: 'toggle',
-      title: 'Отключить текстовый чат в бою',
-      desc: 'Скрывает текстовые сообщения игроков в случайных боях' },
-    { key: 'receiveInvitesInBattle', tab: 'game', cat: 'chat', type: 'toggle',
-      title: 'Принимать приглашения во взвод в бою',
-      desc: 'Разрешает игрокам отправлять вам приглашения в динамический взвод во время боя' },
-    { key: 'receiveFriendshipRequest', tab: 'game', cat: 'chat', type: 'toggle',
-      title: 'Принимать запросы в друзья в бою',
-      desc: 'Отображать входящие запросы на добавление в список контактов в бою' },
-    { key: 'chatContactsListOnly', tab: 'game', cat: 'chat', type: 'toggle',
-      title: 'Принимать сообщения только из списка контактов',
-      desc: 'Блокирует личные сообщения в ангаре от игроков вне вашего списка друзей' },
-
     // Ангар и карусель
     { key: 'carouselType', tab: 'game', cat: 'hangar', type: 'segment',
       options: [{v: 0, l: 'В 1 ряд'}, {v: 1, l: 'В 2 ряда'}],
@@ -817,6 +1248,34 @@
       desc: 'Лёгкое смещение ракурса камеры вслед за движением курсора мыши в ангаре' },
 
     // ==================== ГРАФИКА ====================
+    // Экран, разрешение и обзор (FOV) — 1 в 1 как в оригинальном клиенте игры
+    { key: 'windowMode', tab: 'graphics', cat: 'display', type: 'segment',
+      options: [{v: 0, l: 'Оконный'}, {v: 1, l: 'Полноэкранный'}, {v: 2, l: 'Без рамки'}],
+      title: 'Режим экрана',
+      desc: 'Выбор между полноэкранным, оконным и безрамочным режимом отображения игры' },
+    { key: 'screenResolution', tab: 'graphics', cat: 'display', type: 'resolution',
+      title: 'Разрешение экрана',
+      desc: 'Выбор рабочего разрешения экрана или размера окна из поддерживаемых вашим монитором' },
+    { key: 'refreshRate', tab: 'graphics', cat: 'display', type: 'segment',
+      options: [{v: 60, l: '60 Гц'}, {v: 75, l: '75 Гц'}, {v: 120, l: '120 Гц'}, {v: 144, l: '144 Гц'}, {v: 165, l: '165 Гц'}, {v: 240, l: '240 Гц'}],
+      title: 'Частота обновления экрана',
+      desc: 'Частота вертикальной развёртки монитора в полноэкранном режиме' },
+    { key: 'interfaceScale', tab: 'graphics', cat: 'display', type: 'segment',
+      options: [{v: 0, l: 'Авто'}, {v: 1, l: 'x1'}],
+      title: 'Масштаб интерфейса',
+      desc: 'Масштабирование элементов боевого и ангарного интерфейса под разрешение монитора' },
+    { key: 'fovStatic', tab: 'graphics', cat: 'display', type: 'range', min: 60, max: 120, unit: '°',
+      title: 'Угол обзора (FOV)',
+      desc: 'Фиксированный горизонтальный угол обзора камеры в аркадном режиме' },
+    { key: 'dynamicFov', tab: 'graphics', cat: 'display', type: 'toggle',
+      title: 'Динамическое изменение угла обзора',
+      desc: 'Автоматическое изменение угла обзора камеры в зависимости от скорости движения машины' },
+    { key: 'fovMin', tab: 'graphics', cat: 'display', type: 'range', min: 60, max: 100, unit: '°',
+      title: 'Нижняя граница динамического FOV',
+      desc: 'Минимальный угол обзора при остановке или медленном движении танка' },
+    { key: 'fovMax', tab: 'graphics', cat: 'display', type: 'range', min: 80, max: 120, unit: '°',
+      title: 'Верхняя граница динамического FOV',
+      desc: 'Максимальный угол обзора при движении танка на полной скорости' },
     { key: 'RENDER_PIPELINE', tab: 'graphics', cat: 'display', type: 'segment',
       options: [{v: 0, l: 'Улучшенная'}, {v: 1, l: 'Стандартная'}],
       title: 'Графика (Тип рендера)',
@@ -1048,7 +1507,6 @@
       title: 'Скрыть / Показать миникарту', desc: 'Переключение видимости миникарты в бою' }
   ];
 
-  // Человекочитаемые названия клавиш BigWorld
   var KEY_LABELS = {
     'KEY_NONE': 'Не назначено',
     'KEY_LEFTMOUSE': 'ЛКМ (Мышь 1)',
@@ -1137,12 +1595,16 @@
 
   if (!window.initialState) {
     window.initialState = {
+      windowMode: 1, screenResolution: '1920x1080', refreshRate: 60, interfaceScale: 0,
       fovStatic: 100, fovMin: 80, fovMax: 120, dynamicFov: false,
       dynamicCamera: true, horStabilizationSnp: true, increasedZoom: true,
       commanderCam: true, preCommanderCam: true, minimapAlphaEnabled: false,
-      carouselType: 1, RENDER_PIPELINE: 0, vertSync: false,
+      minimapViewRange: true, minimapMaxViewRange: true, minimapDrawRange: true,
+      minimapMinSpottingRange: false, showVectorOnMap: false, showSectorOnMap: true,
+      carouselType: 1, RENDER_PIPELINE: 0, vertSync: false, isColorBlind: false,
       DRR_AUTOSCALER_ENABLED: false, TERRAIN_QUALITY: 0, FLORA_QUALITY: 0,
-      EFFECTS_QUALITY: 0, masterVolumeToggle: true, enableVoIP: false
+      EFFECTS_QUALITY: 0, masterVolumeToggle: true, enableVoIP: false,
+      uiTheme: 'amber', uiFontScale: 0
     };
     window.currentState = {};
     for (var ik in window.initialState) {
@@ -1155,12 +1617,14 @@
     return window.supported === null || window.supported[key] === true;
   }
 
-  // Точное определение причин неактивности параметров (как в оригинальных настройках игры)
+  // Точное определение причин неактивности параметров (1 в 1 как в оригинальном клиенте игры)
   function getLockReason(item) {
     var s = window.currentState || {};
     var k = item.key;
 
-    // 1. Внутриигровые зависимости между настройками
+    if (k === 'refreshRate' && Number(s.windowMode) !== 1) {
+      return 'Неактивно: выбор частоты обновления экрана доступен только в «Полноэкранном» режиме.';
+    }
     if (k === 'fovStatic' && s.dynamicFov) {
       return 'Неактивно: включён параметр «Динамическое изменение угла обзора». Отключите его, чтобы задать фиксированный угол.';
     }
@@ -1220,7 +1684,6 @@
       return 'Неактивно: требуется включить параметр «Включить голосовую связь».';
     }
 
-    // 2. Ограничение со стороны клиента игры или оборудования
     if (!isSupported(k)) {
       if (item.tab === 'graphics') {
         return 'Неактивно: параметр заблокирован клиентом игры (не поддерживается текущим пресетом рендера или видеокартой).';
@@ -1234,11 +1697,136 @@
     return null;
   }
 
+  // Проверка конфликтов назначенных клавиш управления
+  function getKeybindConflict(item) {
+    if (item.type !== 'keybind') return null;
+    var myKey = window.currentState[item.key];
+    if (!myKey || myKey === 'KEY_NONE') return null;
+    var pairIgnore = (item.key === 'bind_CMD_STOP_UNTIL_FIRE' || item.key === 'bind_CMD_BLOCK_TRACKS');
+
+    for (var i = 0; i < SETTINGS_SCHEMA.length; i++) {
+      var other = SETTINGS_SCHEMA[i];
+      if (other.type !== 'keybind' || other.key === item.key) continue;
+      if (pairIgnore && (other.key === 'bind_CMD_STOP_UNTIL_FIRE' || other.key === 'bind_CMD_BLOCK_TRACKS')) continue;
+      if (window.currentState[other.key] === myKey) {
+        return 'Внимание: эта клавиша также назначена на «' + other.title + '»';
+      }
+    }
+    return null;
+  }
+
+  // Построение живой интерактивной SVG-иллюстрации миникарты
+  function createMinimapVisualBanner() {
+    var s = window.currentState || {};
+    var t = THEMES[currentThemeId] || THEMES.amber;
+    var banner = document.createElement('div');
+    banner.className = 'visual-banner';
+    banner.style.borderColor = t.softBorder;
+
+    var alphaOp = s.minimapAlphaEnabled ? Math.max(0.35, 1 - (Number(s.minimapAlpha) || 0) / 140) : 1;
+    var svgParts = [
+      '<svg width="144" height="114" viewBox="0 0 144 114" style="opacity:' + alphaOp.toFixed(2) + '">',
+      '<rect x="2" y="2" width="140" height="110" rx="6" fill="#0d1520" stroke="#253449" stroke-width="1"/>',
+      '<line x1="37" y1="2" x2="37" y2="112" stroke="#182334" stroke-width="1"/>',
+      '<line x1="72" y1="2" x2="72" y2="112" stroke="#182334" stroke-width="1"/>',
+      '<line x1="107" y1="2" x2="107" y2="112" stroke="#182334" stroke-width="1"/>',
+      '<line x1="2" y1="30" x2="142" y2="30" stroke="#182334" stroke-width="1"/>',
+      '<line x1="2" y1="57" x2="142" y2="57" stroke="#182334" stroke-width="1"/>',
+      '<line x1="2" y1="84" x2="142" y2="84" stroke="#182334" stroke-width="1"/>'
+    ];
+    if (s.minimapDrawRange) {
+      svgParts.push('<circle cx="72" cy="64" r="47" fill="none" stroke="#facc15" stroke-width="1.4" stroke-dasharray="3,2"/>');
+    }
+    if (s.minimapMaxViewRange) {
+      svgParts.push('<circle cx="72" cy="64" r="36" fill="none" stroke="#f8fafc" stroke-width="1.3"/>');
+    }
+    if (s.minimapViewRange) {
+      svgParts.push('<circle cx="72" cy="64" r="26" fill="rgba(74,222,128,0.07)" stroke="#4ade80" stroke-width="1.5"/>');
+    }
+    if (s.minimapMinSpottingRange) {
+      svgParts.push('<circle cx="72" cy="64" r="10" fill="rgba(56,189,248,0.14)" stroke="#38bdf8" stroke-width="1.3"/>');
+    }
+    if (s.showSectorOnMap) {
+      svgParts.push('<path d="M72 64 L48 16 L96 16 Z" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="2,2"/>');
+    }
+    if (s.showVectorOnMap) {
+      svgParts.push('<line x1="72" y1="64" x2="72" y2="10" stroke="#4ade80" stroke-width="1.5"/>');
+    }
+    svgParts.push('<polygon points="72,58 76,67 68,67" fill="#4ade80"/>');
+    var enemyColor = s.isColorBlind ? '#818cf8' : '#ef4444';
+    svgParts.push('<circle cx="96" cy="36" r="3.5" fill="' + enemyColor + '"/>');
+    if (Number(s.showVehicleHPinMinimap) > 0) {
+      svgParts.push('<circle cx="96" cy="36" r="6" fill="none" stroke="' + enemyColor + '" stroke-width="1.3"/>');
+    }
+    if (Number(s.showVehModelsOnMap) > 0) {
+      svgParts.push('<text x="104" y="39" fill="#e2e8f0" font-size="8" font-family="Segoe UI" font-weight="700">ИС-7</text>');
+    }
+    svgParts.push('</svg>');
+
+    banner.innerHTML =
+      '<div class="vb-info fill">' +
+        '<span class="vb-title" style="color:' + t.light + ';">Интерактивная схема кругов миникарты</span>' +
+        '<span class="vb-desc">Включайте и отключайте круги обзора ниже — схема справа наглядно показывает, какие индикаторы будут отображаться на вашей миникарте в бою.</span>' +
+        '<div class="vb-legend">' +
+          '<div class="vb-pill"><span class="vb-dot" style="background:#38bdf8;"></span>50 м Рентген</div>' +
+          '<div class="vb-pill"><span class="vb-dot" style="background:#4ade80;"></span>Фактический обзор</div>' +
+          '<div class="vb-pill"><span class="vb-dot" style="background:#f8fafc;"></span>445 м Макс. засвет</div>' +
+          '<div class="vb-pill"><span class="vb-dot" style="background:#facc15;"></span>564 м Отрисовка</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="vb-canvas">' + svgParts.join('') + '</div>';
+
+    return banner;
+  }
+
+  // Построение живой интерактивной SVG-иллюстрации экрана, разрешения, FOV и цветовой слепоты
+  function createDisplayVisualBanner() {
+    var s = window.currentState || {};
+    var t = THEMES[currentThemeId] || THEMES.amber;
+    var fovDeg = s.dynamicFov ? Number(s.fovMax || 100) : Number(s.fovStatic || 95);
+    var halfSpread = Math.round(20 + ((fovDeg - 60) / 60) * 34);
+    var leftX = 72 - halfSpread;
+    var rightX = 72 + halfSpread;
+    var enemyColor = s.isColorBlind ? '#818cf8' : '#ef4444';
+    var enemyLabel = s.isColorBlind ? 'Сине-фиолетовый' : 'Красный';
+    var resText = String(s.screenResolution || '1920x1080').replace('x', '×');
+    var wmLabels = { 0: 'Оконный', 1: 'Полноэкранный', 2: 'Без рамки' };
+    var wmText = wmLabels[Number(s.windowMode)] || 'Полноэкранный';
+
+    var svg = [
+      '<svg width="144" height="114" viewBox="0 0 144 114">',
+      '<rect x="2" y="2" width="140" height="110" rx="6" fill="#0d1520" stroke="#253449" stroke-width="1"/>',
+      '<path d="M72 94 L' + leftX + ' 18 L' + rightX + ' 18 Z" fill="rgba(96,165,250,0.16)" stroke="' + t.light + '" stroke-width="1.5"/>',
+      '<rect x="66" y="86" width="12" height="16" rx="2" fill="#4ade80"/>',
+      '<text x="72" y="52" text-anchor="middle" fill="#f0f6fc" font-size="11" font-family="Segoe UI" font-weight="700">' + fovDeg + '° FOV</text>',
+      '<text x="72" y="68" text-anchor="middle" fill="' + t.light + '" font-size="9.5" font-family="Segoe UI" font-weight="700">' + resText + '</text>',
+      '<circle cx="44" cy="28" r="4" fill="#4ade80"/>',
+      '<circle cx="100" cy="28" r="4" fill="' + enemyColor + '"/>',
+      '</svg>'
+    ].join('');
+
+    var banner = document.createElement('div');
+    banner.className = 'visual-banner';
+    banner.style.borderColor = t.softBorder;
+    banner.innerHTML =
+      '<div class="vb-info fill">' +
+        '<span class="vb-title" style="color:' + t.light + ';">Экран, разрешение и угол обзора камеры (FOV)</span>' +
+        '<span class="vb-desc">Текущий режим: <b style="color:#f0f6fc;">' + wmText + ' (' + resText + ')</b>. Конус камеры справа наглядно меняет ширину при регулировке FOV.</span>' +
+        '<div class="vb-legend">' +
+          '<div class="vb-pill"><span class="vb-dot" style="background:' + t.light + ';"></span>Экран: ' + resText + '</div>' +
+          '<div class="vb-pill"><span class="vb-dot" style="background:#4ade80;"></span>Угол: ' + fovDeg + '°</div>' +
+          '<div class="vb-pill"><span class="vb-dot" style="background:' + enemyColor + ';"></span>Противник: ' + enemyLabel + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="vb-canvas">' + svg + '</div>';
+
+    return banner;
+  }
+
   var activeTab = 'game';
   var activeCategory = 'all';
   var searchQuery = '';
   var listeningKeyId = null;
-  var currentScale = 1;
 
   var tabsBarEl = document.getElementById('tabsBar');
   var sidebarEl = document.getElementById('sidebar');
@@ -1249,6 +1837,8 @@
   var scrollThumbEl = document.getElementById('contentScrollThumb');
   var btnSave = document.getElementById('btnSave');
   var btnReset = document.getElementById('btnReset');
+  var btnOnlyModified = document.getElementById('btnOnlyModified');
+  var onlyModifiedText = document.getElementById('onlyModifiedText');
   var statusMsg = document.getElementById('statusMsg');
   var connPill = document.getElementById('connPill');
   var tooltipEl = document.getElementById('tooltip');
@@ -1256,16 +1846,125 @@
   var ttBody = document.getElementById('ttBody');
   var ttLock = document.getElementById('ttLock');
   var modalEl = document.getElementById('modalWindow');
+  var topbarEl = document.getElementById('topbar');
+  var footerEl = document.getElementById('footer');
+  var themePopupEl = document.getElementById('themePopup');
+  var brandEmblemEl = document.getElementById('brandEmblem');
+  var searchIconWrapEl = document.getElementById('searchIconWrap');
 
-  // --- НАДЁЖНАЯ СИСТЕМА СКРОЛЛА (transform + кастомный скроллбар, без багов Gameface scrollTop/clientHeight) ---
+  // Применение цветовой темы через статический класс body + прямые inline-стили для 100% отклика в Gameface
+  function applyThemeCss(themeId, fontScale) {
+    var t = THEMES[themeId] || THEMES.amber;
+    currentThemeId = t.id;
+    currentFontScale = Number(fontScale) ? 1 : 0;
+
+    document.body.className = 'theme-' + t.id + (currentFontScale === 1 ? ' font-large' : '');
+
+    var dotEl = document.getElementById('themeDotPreview');
+    if (dotEl) dotEl.style.backgroundColor = t.light;
+
+    if (brandEmblemEl) {
+      brandEmblemEl.style.backgroundColor = t.softBg;
+      brandEmblemEl.style.borderColor = t.softBorder;
+      brandEmblemEl.innerHTML = makeSvg('gear', t.light, 18);
+    }
+    if (searchIconWrapEl) {
+      searchIconWrapEl.innerHTML = makeSvg('search', t.light, 13);
+    }
+    if (modalEl) modalEl.style.borderColor = t.winBorder;
+    if (topbarEl) {
+      topbarEl.style.backgroundColor = t.topBg;
+      topbarEl.style.borderBottomColor = t.winBorder;
+    }
+    if (sidebarEl) {
+      sidebarEl.style.backgroundColor = t.sideBg;
+      sidebarEl.style.borderRightColor = t.winBorder;
+    }
+    if (footerEl) {
+      footerEl.style.backgroundColor = t.topBg;
+      footerEl.style.borderTopColor = t.winBorder;
+    }
+    if (tooltipEl) tooltipEl.style.borderColor = t.primary;
+    if (ttTitle) ttTitle.style.color = t.light;
+    if (btnSave) btnSave.style.backgroundColor = t.primary;
+  }
+
+  function renderThemePopup() {
+    var grid = document.getElementById('themeGrid');
+    var fGroup = document.getElementById('fontScaleGroup');
+    var tCur = THEMES[currentThemeId] || THEMES.amber;
+    if (!grid || !fGroup) return;
+
+    grid.innerHTML = '';
+    for (var tk in THEMES) {
+      if (!THEMES.hasOwnProperty(tk)) continue;
+      (function (theme) {
+        var isAct = currentThemeId === theme.id;
+        var sw = document.createElement('div');
+        sw.className = 'tp-swatch' + (isAct ? ' active' : '');
+        if (isAct) {
+          sw.style.borderColor = theme.light;
+          sw.style.backgroundColor = theme.softBg;
+        }
+        sw.innerHTML = '<span class="tp-color" style="background:' + theme.light + ';"></span><span class="tp-name" style="color:' + (isAct ? theme.light : '#e6edf3') + ';">' + theme.name + '</span>';
+        sw.onclick = function (e) {
+          e.stopPropagation();
+          applyThemeCss(theme.id, currentFontScale);
+          window.currentState.uiTheme = theme.id;
+          window.initialState.uiTheme = theme.id;
+          send('/api/save_theme', { uiTheme: theme.id, uiFontScale: currentFontScale });
+          renderThemePopup();
+          renderTabs();
+          renderSidebar();
+          renderContent(true);
+          updateFooterState();
+        };
+        grid.appendChild(sw);
+      }(THEMES[tk]));
+    }
+
+    fGroup.innerHTML = '';
+    [{ v: 0, l: 'Стандартный (100%)' }, { v: 1, l: 'Крупный (115%)' }].forEach(function (opt, idx) {
+      var isAct = currentFontScale === opt.v;
+      var b = document.createElement('div');
+      b.className = 'opt-btn' + (isAct ? ' active' : '') + (idx === 1 ? ' last' : '');
+      b.style.backgroundColor = isAct ? tCur.primary : 'transparent';
+      b.style.color = isAct ? '#ffffff' : '#8b949e';
+      b.textContent = opt.l;
+      b.onclick = function (e) {
+        e.stopPropagation();
+        applyThemeCss(currentThemeId, opt.v);
+        window.currentState.uiFontScale = opt.v;
+        window.initialState.uiFontScale = opt.v;
+        send('/api/save_theme', { uiTheme: currentThemeId, uiFontScale: opt.v });
+        renderThemePopup();
+        renderTabs();
+        renderSidebar();
+        renderContent(true);
+        updateFooterState();
+      };
+      fGroup.appendChild(b);
+    });
+  }
+
+  window.applyThemeFromState = function () {
+    var st = window.currentState || {};
+    var th = st.uiTheme || currentThemeId || 'amber';
+    var fs = st.uiFontScale !== undefined ? st.uiFontScale : currentFontScale;
+    applyThemeCss(th, fs);
+    renderThemePopup();
+  };
+
+  // --- ЧЁТКАЯ СИСТЕМА РАЗМЕРОВ И СКРОЛЛА (1:1 пиксели без мыла от transform:scale) ---
   var contentScrollY = 0;
-  var sidebarScrollY = 0;
-  var VIEWPORT_H = 546; // 582px высота области минус 36px вертикальные отступы
-  var TRACK_H = 562;
+  var panelW = 1200;
+  var panelH = 740;
+  var viewportH = 574;
+  var trackH = 590;
 
   function getBodyHeight(bodyEl, fallbackCount) {
     var rect = bodyEl.getBoundingClientRect();
-    var h = (rect && rect.height > 0) ? (rect.height / (currentScale || 1)) : 0;
+    var h = (rect && rect.height > 0) ? rect.height : 0;
     if (!h || isNaN(h) || h < 10) {
       h = (fallbackCount || bodyEl.children.length || 1) * 74;
     }
@@ -1274,7 +1973,7 @@
 
   function getContentMaxScroll() {
     var bodyH = getBodyHeight(contentBodyEl);
-    var maxS = Math.max(0, Math.round(bodyH - VIEWPORT_H));
+    var maxS = Math.max(0, Math.round(bodyH - viewportH));
     return isNaN(maxS) ? 0 : maxS;
   }
 
@@ -1291,9 +1990,9 @@
       scrollTrackEl.style.display = 'none';
     } else {
       scrollTrackEl.style.display = 'block';
-      var bodyH = maxS + VIEWPORT_H;
-      var thumbH = Math.max(38, Math.round((VIEWPORT_H / bodyH) * TRACK_H));
-      var maxThumbTop = Math.max(1, TRACK_H - thumbH);
+      var bodyH = maxS + viewportH;
+      var thumbH = Math.max(38, Math.round((viewportH / bodyH) * trackH));
+      var maxThumbTop = Math.max(1, trackH - thumbH);
       var thumbTop = Math.round((contentScrollY / maxS) * maxThumbTop);
       scrollThumbEl.style.height = thumbH + 'px';
       scrollThumbEl.style.top = thumbTop + 'px';
@@ -1305,7 +2004,6 @@
     updateContentScrollUI();
   }
 
-  // Перетаскивание ползунка скроллбара и клик по дорожке
   (function initScrollbarDrag() {
     var draggingThumb = false;
     var dragStartY = 0;
@@ -1349,7 +2047,6 @@
     });
   }());
 
-  // Обработка колеса мыши (естественное направление по умолчанию в Gameface и браузере)
   (function initWheelScroll() {
     var lastWheelTs = 0;
     var lastWheelType = '';
@@ -1381,7 +2078,6 @@
       e.stopPropagation();
       hideHint();
 
-      // В Gameface при прокрутке колеса вниз на себе deltaY < 0; в обычном браузере deltaY > 0
       var dir;
       if (e.type === 'wheel' && !isGamefaceEnv) {
         dir = raw > 0 ? 1 : -1;
@@ -1436,7 +2132,6 @@
     applyCapturedKey(bindTarget, capturedKey);
   };
 
-  // Захват клавиш на стороне JS + поддержка прокрутки стрелками и PageUp/PageDown
   window.addEventListener('keydown', function (e) {
     var kc = e.keyCode || e.which || 0;
     if (listeningKeyId) {
@@ -1474,6 +2169,7 @@
   function getModifiedCount() {
     var n = 0;
     for (var key in window.currentState) {
+      if (key === 'uiTheme' || key === 'uiFontScale') continue;
       if (window.currentState[key] !== window.initialState[key]) n++;
     }
     return n;
@@ -1481,9 +2177,23 @@
 
   function updateFooterState() {
     var n = getModifiedCount();
+    var t = THEMES[currentThemeId] || THEMES.amber;
     btnSave.className = 'btn btn-primary' + (n === 0 ? ' disabled' : '');
+    btnSave.style.backgroundColor = t.primary;
     btnSave.textContent = n > 0 ? 'Применить (' + n + ')' : 'Применить';
     btnReset.style.display = n > 0 ? 'inline-block' : 'none';
+
+    if (n > 0 || filterOnlyModified) {
+      btnOnlyModified.style.display = 'flex';
+      btnOnlyModified.className = 'top-action-btn' + (filterOnlyModified ? ' active' : '');
+      btnOnlyModified.style.backgroundColor = filterOnlyModified ? t.softBg : '#161e2c';
+      btnOnlyModified.style.borderColor = filterOnlyModified ? t.softBorder : '#283448';
+      btnOnlyModified.style.color = filterOnlyModified ? t.light : '#c9d1d9';
+      onlyModifiedText.textContent = 'Изменённые (' + n + ')';
+    } else {
+      btnOnlyModified.style.display = 'none';
+    }
+
     if (window.model && window.__bridgeDiag && window.__bridgeDiag.stateLen > 0) {
       connPill.textContent = 'Связь с клиентом: Активна';
       connPill.className = 'conn-pill';
@@ -1492,8 +2202,11 @@
   window.updateFooterState = updateFooterState;
 
   function showHint(item, lockReason, clientX, clientY) {
+    var t = THEMES[currentThemeId] || THEMES.amber;
     ttTitle.textContent = item.title;
+    ttTitle.style.color = t.light;
     ttBody.textContent = item.hint || item.desc;
+    tooltipEl.style.borderColor = t.primary;
     if (lockReason) {
       ttLock.style.display = 'block';
       ttLock.textContent = lockReason;
@@ -1504,11 +2217,10 @@
     tooltipEl.style.display = 'block';
 
     var rect = modalEl.getBoundingClientRect();
-    var scale = rect.width / 1140 || 1;
-    var rx = (clientX - rect.left) / scale + 16;
-    var ry = (clientY - rect.top) / scale - 10;
-    if (rx + 330 > 1120) rx = rx - 350;
-    if (ry + 150 > 690) ry = 530;
+    var rx = (clientX - rect.left) + 16;
+    var ry = (clientY - rect.top) - 10;
+    if (rx + 340 > panelW - 15) rx = rx - 355;
+    if (ry + 150 > panelH - 15) ry = panelH - 165;
     if (ry < 10) ry = 10;
     tooltipEl.style.left = Math.round(rx) + 'px';
     tooltipEl.style.top = Math.round(ry) + 'px';
@@ -1519,14 +2231,22 @@
   }
 
   function renderTabs() {
+    var t = THEMES[currentThemeId] || THEMES.amber;
     tabsBarEl.innerHTML = '';
     TABS.forEach(function (tab) {
+      var isAct = activeTab === tab.id && !searchQuery && !filterOnlyModified;
       var btn = document.createElement('div');
-      btn.className = 'tab-btn' + (activeTab === tab.id && !searchQuery ? ' active' : '');
-      btn.innerHTML = tab.icon + '<span>' + tab.title + '</span>';
+      btn.className = 'tab-btn' + (isAct ? ' active' : '');
+      btn.style.backgroundColor = isAct ? t.softBg : 'transparent';
+      btn.style.borderColor = isAct ? t.softBorder : 'transparent';
+      btn.style.color = isAct ? t.light : '#9ca3af';
+
+      var iconColor = isAct ? t.light : '#9ca3af';
+      btn.innerHTML = '<span class="tab-icon-wrap">' + makeSvg(tab.iconKey, iconColor, 16) + '</span><span>' + tab.title + '</span>';
       btn.onclick = function () {
         activeTab = tab.id;
         activeCategory = 'all';
+        filterOnlyModified = false;
         contentScrollY = 0;
         if (searchQuery) {
           searchQuery = '';
@@ -1535,6 +2255,7 @@
         renderTabs();
         renderSidebar();
         renderContent(true);
+        updateFooterState();
       };
       tabsBarEl.appendChild(btn);
     });
@@ -1542,6 +2263,7 @@
   window.renderTabs = renderTabs;
 
   function renderSidebar() {
+    var t = THEMES[currentThemeId] || THEMES.amber;
     sidebarBodyEl.innerHTML = '';
     var lbl = document.createElement('div');
     lbl.className = 'sidebar-label';
@@ -1553,15 +2275,29 @@
       var count = SETTINGS_SCHEMA.filter(function (i) {
         return i.tab === activeTab && (cat.id === 'all' || i.cat === cat.id);
       }).length;
+      var isAct = activeCategory === cat.id && !filterOnlyModified;
       var btn = document.createElement('div');
-      btn.className = 'nav-item' + (activeCategory === cat.id ? ' active' : '');
-      btn.innerHTML = '<div class="row row-between"><div class="row"><span class="nav-dot"></span><span>' +
-        cat.title + '</span></div><span class="nav-count">' + count + '</span></div>';
+      btn.className = 'nav-item' + (isAct ? ' active' : '');
+      btn.style.backgroundColor = isAct ? t.softBg : 'transparent';
+      btn.style.borderColor = isAct ? t.softBorder : 'transparent';
+      btn.style.color = isAct ? t.light : '#9ca3af';
+
+      var iconColor = isAct ? t.light : '#8b949e';
+      var countBg = isAct ? t.softBg : '#1a2232';
+      var countCol = isAct ? t.light : '#8b949e';
+      btn.innerHTML =
+        '<div class="row row-between">' +
+          '<div class="row"><span class="nav-icon-wrap">' + makeSvg(cat.id, iconColor, 15) + '</span><span>' + cat.title + '</span></div>' +
+          '<span class="nav-count" style="background:' + countBg + ';color:' + countCol + ';">' + count + '</span>' +
+        '</div>';
       btn.onclick = function () {
         activeCategory = cat.id;
+        filterOnlyModified = false;
         contentScrollY = 0;
+        renderTabs();
         renderSidebar();
         renderContent(true);
+        updateFooterState();
       };
       sidebarBodyEl.appendChild(btn);
     });
@@ -1577,14 +2313,26 @@
   }
 
   function renderContent(preserveScroll) {
-    var savedScroll = preserveScroll ? contentScrollY : contentScrollY;
+    var savedScroll = preserveScroll ? contentScrollY : 0;
+    var t = THEMES[currentThemeId] || THEMES.amber;
     contentBodyEl.innerHTML = '';
     var q = searchQuery.toLowerCase();
     var lastGroup = null, shown = 0;
 
+    if (!q && !filterOnlyModified) {
+      if (activeTab === 'game' && (activeCategory === 'minimap' || activeCategory === 'all')) {
+        contentBodyEl.appendChild(createMinimapVisualBanner());
+      } else if (activeTab === 'graphics' && (activeCategory === 'display' || activeCategory === 'all')) {
+        contentBodyEl.appendChild(createDisplayVisualBanner());
+      }
+    }
+
     SETTINGS_SCHEMA.forEach(function (item) {
-      var matchTab = q ? true : (item.tab === activeTab);
-      var matchCat = q ? true : (activeCategory === 'all' || item.cat === activeCategory);
+      var isMod = window.currentState[item.key] !== window.initialState[item.key];
+      if (filterOnlyModified && !isMod) return;
+
+      var matchTab = (q || filterOnlyModified) ? true : (item.tab === activeTab);
+      var matchCat = (q || filterOnlyModified) ? true : (activeCategory === 'all' || item.cat === activeCategory);
       var matchSearch = !q ||
         item.title.toLowerCase().indexOf(q) !== -1 ||
         item.desc.toLowerCase().indexOf(q) !== -1 ||
@@ -1594,21 +2342,32 @@
       shown++;
 
       var groupKey = item.tab + ':' + item.cat;
-      if ((activeCategory === 'all' || q) && groupKey !== lastGroup) {
+      if ((activeCategory === 'all' || q || filterOnlyModified) && groupKey !== lastGroup) {
         var h = document.createElement('div');
         h.className = 'section-header' + (lastGroup === null ? ' first' : '');
-        h.textContent = getCategoryTitle(item.tab, item.cat);
+        h.style.color = t.light;
+        h.innerHTML = '<span class="sec-icon-wrap">' + makeSvg(item.cat, t.light, 14) + '</span><span>' + getCategoryTitle(item.tab, item.cat) + '</span>';
         contentBodyEl.appendChild(h);
         lastGroup = groupKey;
       }
 
       var lockReason = getLockReason(item);
+      var conflictReason = getKeybindConflict(item);
       var locked = !!lockReason;
       var card = document.createElement('div');
       var refreshCard = function () {
-        card.className = 'card' +
-          (window.currentState[item.key] !== window.initialState[item.key] ? ' modified' : '') +
-          (locked ? ' locked' : '');
+        var modNow = window.currentState[item.key] !== window.initialState[item.key];
+        card.className = 'card' + (modNow ? ' modified' : '') + (locked ? ' locked' : '');
+        if (locked) {
+          card.style.borderLeftColor = '#f59e0b';
+          card.style.backgroundColor = '#111620';
+        } else if (modNow) {
+          card.style.borderLeftColor = t.primary;
+          card.style.backgroundColor = t.cardModBg;
+        } else {
+          card.style.borderLeftColor = '#222c3d';
+          card.style.backgroundColor = '#141b27';
+        }
       };
       refreshCard();
 
@@ -1620,6 +2379,17 @@
 
       var row = document.createElement('div');
       row.className = 'row row-between';
+
+      var leftWrap = document.createElement('div');
+      leftWrap.className = 'row fill';
+
+      var iconBadge = document.createElement('div');
+      iconBadge.className = 'card-icon-badge';
+      iconBadge.style.backgroundColor = locked ? 'rgba(245, 158, 11, 0.08)' : t.softBg;
+      iconBadge.style.borderColor = locked ? 'rgba(245, 158, 11, 0.25)' : t.softBorder;
+      iconBadge.innerHTML = makeSvg(item.cat, locked ? '#f59e0b' : t.light, 16);
+      leftWrap.appendChild(iconBadge);
+
       var info = document.createElement('div');
       info.className = 'card-info fill';
 
@@ -1633,11 +2403,27 @@
 
       var qBadge = document.createElement('div');
       qBadge.className = 'hint-icon';
-      qBadge.innerHTML = INFO_SVG;
+      qBadge.style.backgroundColor = t.softBg;
+      qBadge.style.borderColor = t.softBorder;
+      qBadge.innerHTML = makeSvg('info', t.light, 11);
       qBadge.onmouseenter = function (e) { showHint(item, lockReason, e.clientX, e.clientY); };
       qBadge.onmousemove = function (e) { showHint(item, lockReason, e.clientX, e.clientY); };
       qBadge.onmouseleave = hideHint;
       titleRow.appendChild(qBadge);
+
+      if (isMod && !locked) {
+        var revBtn = document.createElement('div');
+        revBtn.className = 'card-revert-btn';
+        revBtn.title = 'Вернуть исходное значение этого параметра';
+        revBtn.textContent = '↺ Сброс';
+        revBtn.onclick = function (e) {
+          e.stopPropagation();
+          window.currentState[item.key] = window.initialState[item.key];
+          renderContent(true);
+          updateFooterState();
+        };
+        titleRow.appendChild(revBtn);
+      }
 
       var dDiv = document.createElement('div');
       dDiv.className = 'card-desc';
@@ -1649,22 +2435,29 @@
       if (locked && lockReason) {
         var lockBadge = document.createElement('div');
         lockBadge.className = 'card-lock-reason';
-        lockBadge.innerHTML = LOCK_SVG + '<span>' + lockReason + '</span>';
+        lockBadge.innerHTML = '<span class="lock-icon-wrap">' + makeSvg('lock', '#fbbf24', 12) + '</span><span>' + lockReason + '</span>';
         info.appendChild(lockBadge);
+      } else if (conflictReason) {
+        var confBadge = document.createElement('div');
+        confBadge.className = 'card-lock-reason conflict';
+        confBadge.innerHTML = '<span class="lock-icon-wrap">' + makeSvg('warn', '#f87171', 12) + '</span><span>' + conflictReason + '</span>';
+        info.appendChild(confBadge);
       }
 
-      row.appendChild(info);
+      leftWrap.appendChild(info);
+      row.appendChild(leftWrap);
 
       if (item.type === 'toggle') {
+        var isOn = !!window.currentState[item.key];
         var sw = document.createElement('div');
         var knob = document.createElement('div');
         knob.className = 'knob';
         sw.appendChild(knob);
-        sw.className = 'card-control switch' + (window.currentState[item.key] ? ' on' : '');
+        sw.className = 'card-control switch' + (isOn ? ' on' : '');
+        sw.style.backgroundColor = isOn ? t.primary : '#283242';
         if (!locked) {
           sw.onclick = function () {
-            var v = !window.currentState[item.key];
-            window.currentState[item.key] = v;
+            window.currentState[item.key] = !window.currentState[item.key];
             renderContent(true);
             updateFooterState();
           };
@@ -1678,10 +2471,13 @@
         rng.className = 'range';
         var track = document.createElement('div'); track.className = 'track';
         var fill = document.createElement('div'); fill.className = 'fill';
+        fill.style.backgroundColor = t.primary;
         var thumb = document.createElement('div'); thumb.className = 'thumb';
+        thumb.style.backgroundColor = t.light;
         rng.appendChild(track); rng.appendChild(fill); rng.appendChild(thumb);
         var valSpan = document.createElement('span');
         valSpan.className = 'range-val';
+        valSpan.style.color = t.light;
 
         var setRange = function (v) {
           v = Math.max(item.min, Math.min(item.max, Math.round(v)));
@@ -1706,19 +2502,30 @@
           };
           rng.onmousedown = function (e) { dragging = true; fromX(e.clientX); };
           document.addEventListener('mousemove', function (e) { if (dragging) fromX(e.clientX); });
-          document.addEventListener('mouseup', function () { if (dragging) dragging = false; });
+          document.addEventListener('mouseup', function () {
+            if (dragging) {
+              dragging = false;
+              renderContent(true);
+            }
+          });
         }
         wrap.appendChild(rng);
         wrap.appendChild(valSpan);
         row.appendChild(wrap);
 
-      } else if (item.type === 'segment') {
+      } else if (item.type === 'segment' || item.type === 'resolution') {
+        var optsList = item.type === 'resolution' ? getResolutionOptions() : item.options;
         var bGroup = document.createElement('div');
-        bGroup.className = 'card-control btn-group';
-        item.options.forEach(function (opt, idx) {
+        bGroup.className = 'card-control btn-group' + (item.type === 'resolution' ? ' wrap-res' : '');
+        optsList.forEach(function (opt, idx) {
           var b = document.createElement('div');
-          var isLast = idx === item.options.length - 1;
-          b.className = 'opt-btn' + (Number(window.currentState[item.key]) === opt.v ? ' active' : '') + (isLast ? ' last' : '');
+          var isLast = idx === optsList.length - 1;
+          var isAct = item.type === 'resolution'
+            ? (String(window.currentState[item.key]) === String(opt.v))
+            : (Number(window.currentState[item.key]) === Number(opt.v));
+          b.className = 'opt-btn' + (isAct ? ' active' : '') + (isLast ? ' last' : '');
+          b.style.backgroundColor = isAct ? t.primary : 'transparent';
+          b.style.color = isAct ? '#ffffff' : '#8b949e';
           b.textContent = opt.l;
           if (!locked) {
             b.onclick = function () {
@@ -1741,6 +2548,9 @@
         kbBtn.className = 'keybind-btn' +
           (isListening ? ' listening' : '') +
           (curKeyStr === 'KEY_NONE' && !isListening ? ' unbound' : '');
+        if (!isListening && curKeyStr !== 'KEY_NONE') {
+          kbBtn.style.color = t.light;
+        }
         kbBtn.textContent = isListening ? 'Нажмите клавишу...' : formatKeyLabel(curKeyStr);
 
         if (!locked) {
@@ -1760,7 +2570,7 @@
           var clrBtn = document.createElement('div');
           clrBtn.className = 'keybind-clear';
           clrBtn.title = 'Очистить привязку клавиши';
-          clrBtn.innerHTML = CLEAR_SVG;
+          clrBtn.innerHTML = makeSvg('clear', '#9ca3af', 12);
           clrBtn.onclick = function (e) {
             e.stopPropagation();
             listeningKeyId = null;
@@ -1784,7 +2594,7 @@
     if (!shown) {
       var e = document.createElement('div');
       e.className = 'empty';
-      e.textContent = 'По вашему запросу ничего не найдено.';
+      e.textContent = filterOnlyModified ? 'Нет изменённых параметров.' : 'По вашему запросу ничего не найдено.';
       contentBodyEl.appendChild(e);
     }
 
@@ -1793,6 +2603,28 @@
     setTimeout(updateContentScrollUI, 16);
   }
   window.renderContent = renderContent;
+
+  document.getElementById('btnThemePicker').onclick = function (e) {
+    e.stopPropagation();
+    var isOpen = themePopupEl.style.display === 'block';
+    themePopupEl.style.display = isOpen ? 'none' : 'block';
+    if (!isOpen) renderThemePopup();
+  };
+
+  document.addEventListener('click', function (e) {
+    if (themePopupEl.style.display === 'block' && !themePopupEl.contains(e.target)) {
+      themePopupEl.style.display = 'none';
+    }
+  });
+
+  btnOnlyModified.onclick = function () {
+    filterOnlyModified = !filterOnlyModified;
+    contentScrollY = 0;
+    renderTabs();
+    renderSidebar();
+    renderContent(true);
+    updateFooterState();
+  };
 
   document.getElementById('searchInput').oninput = function (e) {
     searchQuery = e.target.value.trim();
@@ -1803,9 +2635,12 @@
 
   btnReset.onclick = function () {
     listeningKeyId = null;
+    filterOnlyModified = false;
     for (var k in window.initialState) {
       window.currentState[k] = window.initialState[k];
     }
+    renderTabs();
+    renderSidebar();
     renderContent(true);
     updateFooterState();
   };
@@ -1821,9 +2656,12 @@
         for (var k in window.currentState) {
           window.initialState[k] = window.currentState[k];
         }
+        filterOnlyModified = false;
         statusMsg.textContent = 'Настройки применены!';
         statusMsg.style.color = '#4ade80';
       }
+      renderTabs();
+      renderSidebar();
       renderContent(true);
       updateFooterState();
       statusMsg.className = 'status-msg show';
@@ -1832,9 +2670,15 @@
   };
 
   var legacyEl = document.getElementById('chkLegacy');
+  var legacyBoxEl = document.getElementById('legacyBox');
   legacyEl.onclick = function () {
+    var t = THEMES[currentThemeId] || THEMES.amber;
     var on = legacyEl.className.indexOf(' on') < 0;
     legacyEl.className = 'legacy-label' + (on ? ' on' : '');
+    if (legacyBoxEl) {
+      legacyBoxEl.style.backgroundColor = on ? t.primary : '#0d1117';
+      legacyBoxEl.style.borderColor = on ? t.primary : '#485263';
+    }
     if (on) send('/api/use_legacy', { permanent: true });
   };
 
@@ -1842,28 +2686,183 @@
     send('/api/close', {});
   };
 
-  var PANEL_W = 1140, PANEL_H = 710;
+  // Чёткое позиционирование окна в целых пикселях БЕЗ размывающего transform:scale()
   function fitPanel() {
-    var vw = window.innerWidth || document.documentElement.clientWidth || PANEL_W;
-    var vh = window.innerHeight || document.documentElement.clientHeight || PANEL_H;
-    var k = Math.min(Math.min(vw / PANEL_W, vh / PANEL_H) * 0.92, 2.5);
-    currentScale = k || 1;
-    var x = Math.round((vw - PANEL_W * k) / 2);
-    var y = Math.round((vh - PANEL_H * k) / 2);
+    var vw = window.innerWidth || document.documentElement.clientWidth || 1280;
+    var vh = window.innerHeight || document.documentElement.clientHeight || 800;
+
+    var w = Math.min(1380, Math.max(1040, Math.round(vw * 0.84)));
+    var h = Math.min(860, Math.max(640, Math.round(vh * 0.85)));
+    w = w - (w % 2);
+    h = h - (h % 2);
+
+    panelW = w;
+    panelH = h;
+    var midH = h - 68 - 62;
+    var sideW = 268;
+    var contW = w - sideW;
+    viewportH = midH - 36;
+    trackH = midH - 20;
+
+    var x = Math.max(0, Math.round((vw - w) / 2));
+    var y = Math.max(0, Math.round((vh - h) / 2));
+
     modalEl.style.left = x + 'px';
     modalEl.style.top = y + 'px';
-    modalEl.style.webkitTransform = modalEl.style.transform = 'scale(' + k + ')';
+    modalEl.style.width = w + 'px';
+    modalEl.style.height = h + 'px';
+    modalEl.style.webkitTransform = 'none';
+    modalEl.style.transform = 'none';
+
+    topbarEl.style.width = w + 'px';
+    footerEl.style.width = w + 'px';
+    sidebarEl.style.height = midH + 'px';
+    contentEl.style.left = sideW + 'px';
+    contentEl.style.width = contW + 'px';
+    contentEl.style.height = midH + 'px';
+    scrollTrackEl.style.height = trackH + 'px';
+
     updateContentScrollUI();
   }
 
   window.addEventListener('resize', fitPanel);
+  applyThemeCss(currentThemeId, currentFontScale);
   fitPanel();
-  setTimeout(fitPanel, 250);
+  setTimeout(fitPanel, 200);
 
   renderTabs();
   renderSidebar();
   renderContent(true);
   updateFooterState();
+</script>
+<script src="coui://gui/gameface/mods/modern_settings/bridge.js"></script>
+<script>
+  // Встроенный резервный мост связи с Python (гарантирует работу синхронизации, даже если внешний bridge.js повреждён в res_mods)
+  (function () {
+    if (window.__bridgeLoaded && typeof window.postJSON === 'function') {
+      return;
+    }
+    window.__bridgeLoaded = true;
+    var diag = window.__bridgeDiag = { model: false, apiRequest: false, viewEnv: false, helloSent: false, stateLen: 0, acks: 0, error: '' };
+    var lastAck = '', lastState = '', started = false, dataCallbackRegistered = false;
+
+    function safeJsonParse(v, fb) { try { return JSON.parse(v); } catch (e) { return fb; } }
+
+    function applyStateJson(raw) {
+      var uiReady = typeof window.renderContent === 'function';
+      if (!raw || (raw === lastState && uiReady && window.__stateAppliedOnce)) return;
+      var injected = safeJsonParse(raw, null);
+      if (!injected || typeof injected !== 'object') return;
+      lastState = raw;
+      diag.stateLen = raw.length;
+      var initial = {}, current = {}, src = injected.settings || {};
+      for (var k in src) { if (src.hasOwnProperty(k)) { initial[k] = src[k]; current[k] = src[k]; } }
+      window.initialState = initial;
+      window.currentState = current;
+      if (injected.resolutions && injected.resolutions.length) {
+        window.availableResolutions = injected.resolutions.slice();
+      }
+      if (injected.supported && injected.supported.length) {
+        var sm = {};
+        for (var i = 0; i < injected.supported.length; i++) sm[injected.supported[i]] = true;
+        window.supported = sm;
+      } else {
+        window.supported = null;
+      }
+      if (uiReady) {
+        window.__stateAppliedOnce = true;
+        try {
+          if (typeof window.applyThemeFromState === 'function') window.applyThemeFromState();
+          if (typeof window.renderTabs === 'function') window.renderTabs();
+          if (typeof window.renderSidebar === 'function') window.renderSidebar();
+          if (typeof window.renderContent === 'function') window.renderContent(true);
+          if (typeof window.updateFooterState === 'function') window.updateFooterState();
+        } catch (e) {}
+      }
+    }
+
+    function processAck(raw) {
+      if (!raw || raw === lastAck) return;
+      lastAck = raw;
+      var ack = safeJsonParse(raw, null);
+      if (!ack || !ack.id) return;
+      diag.acks++;
+      try {
+        if (ack.bindTarget && typeof window.__onPythonKeyCaptured === 'function') {
+          window.__onPythonKeyCaptured(String(ack.bindTarget), String(ack.capturedKey || ''));
+        }
+      } catch (e) {}
+      try {
+        if (typeof window.__ack === 'function') window.__ack(String(ack.id), !!ack.ok);
+      } catch (e) {}
+    }
+
+    function dispatchToPython(id, cmd, dataObj) {
+      var jsonStr = '{}';
+      try { jsonStr = JSON.stringify(dataObj || {}); } catch (e) {}
+      var sEnv = false, sCmd = false;
+      if (typeof window.viewEnv !== 'undefined' && typeof window.viewEnv.handleViewEvent === 'function') {
+        try {
+          window.viewEnv.handleViewEvent({
+            __Type: 'GFViewEventProxy', type: 1, contentID: 1, decoratorID: 0, targetID: 0, isMouseEvent: false, on: true,
+            arguments: [
+              { __Type: 'GFValueProxy', name: 'id', string: String(id) },
+              { __Type: 'GFValueProxy', name: 'cmd', string: String(cmd) },
+              { __Type: 'GFValueProxy', name: 'json', string: String(jsonStr) }
+            ]
+          });
+          sEnv = true;
+        } catch (e) {}
+      }
+      if (window.model && typeof window.model.apiRequest === 'function') {
+        try { window.model.apiRequest({ id: String(id), cmd: String(cmd), json: String(jsonStr) }); sCmd = true; } catch (e) {}
+      }
+      return sEnv || sCmd;
+    }
+
+    window.postJSON = function (url, data, cb) {
+      var cmd = String(url || '').replace('/api/', '');
+      var sid = window.__sid || (Math.random().toString(36).slice(2, 8));
+      var num = Number(window.__n || 0) + 1;
+      var id = sid + '-' + num;
+      window.__sid = sid; window.__n = num;
+      if (cb) { window.__cbs = window.__cbs || {}; window.__cbs[id] = cb; }
+      var ok = dispatchToPython(id, cmd, data || {});
+      if (!ok && window.__cbs && window.__cbs[id]) { var f = window.__cbs[id]; delete window.__cbs[id]; try { f(false); } catch (e) {} }
+    };
+
+    function registerDataCallback() {
+      if (dataCallbackRegistered) return;
+      if (typeof window.viewEnv !== 'undefined' && typeof window.viewEnv.addDataChangedCallback === 'function') {
+        try { window.viewEnv.addDataChangedCallback('model', 0, true); dataCallbackRegistered = true; diag.viewEnv = true; } catch (e) {}
+      }
+    }
+
+    function poll() {
+      if (!window.model) return;
+      registerDataCallback();
+      applyStateJson(window.model.stateJson || '');
+      processAck(window.model.ackJson || '');
+    }
+
+    function start() {
+      if (started || !window.model) return started;
+      started = true; diag.model = true;
+      registerDataCallback();
+      try { poll(); } catch (e) {}
+      if (window.engine && typeof window.engine.on === 'function') {
+        try { window.engine.on('viewEnv.onDataChanged', function () { try { poll(); } catch (e) {} }); } catch (e) {}
+      }
+      var helloId = 'bridge-hello-' + Math.random().toString(36).slice(2, 8);
+      if (dispatchToPython(helloId, 'hello', {})) diag.helloSent = true;
+      return true;
+    }
+
+    if (window.engine && window.engine.whenReady && typeof window.engine.whenReady.then === 'function') {
+      window.engine.whenReady.then(function () { registerDataCallback(); start(); });
+    }
+    (function tick() { try { if (start()) poll(); } catch (e) {} setTimeout(tick, started ? 200 : 300); }());
+  }());
 </script>
 </body>
 </html>
